@@ -159,7 +159,29 @@ public class DbUsuariosComunes extends DbArt {
         return correcto;
     }
 
+    public boolean actualizarEventosFavoritos(String correoElectronico, String nuevosEventosFavoritos) {
+        boolean correcto;
 
+        DbArt dbHelper = new DbArt(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        try {
+            ContentValues values = new ContentValues();
+            values.put("favoritosUsuario", nuevosEventosFavoritos);
+
+            int rowsAffected = db.update(TABLE_USUARIOS, values, "correoUsuarioUsuarios = ?", new String[]{correoElectronico});
+
+            correcto = (rowsAffected > 0);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            correcto = false;
+        } finally {
+            db.close();
+        }
+
+        return correcto;
+    }
 
     public LinkedList<String> obtenerCorreosElectronicos(){
 

@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.datastructureproject_groupb.Bocu;
 import com.example.datastructureproject_groupb.entidades.artista.CrearCuentaExpositor;
+import com.example.datastructureproject_groupb.entidades.evento.Evento;
 import com.example.datastructureproject_groupb.entidades.info_sesion.CrearCuentaUsuario;
 import com.example.datastructureproject_groupb.ImplementacionesEstructurasDeDatos.DynamicUnsortedList;
 import com.example.datastructureproject_groupb.ImplementacionesEstructurasDeDatos.LinkedList;
@@ -832,6 +833,33 @@ public class CuentaFragment extends Fragment {
             }
 
     }
+
+    public static void establecerEventosFavoritos(){
+
+        Bocu.eventosFavoritos = new DynamicUnsortedList<>();
+
+        String eventosExistentes = "";
+
+        String[] idEventosFavoritos = ((UsuarioComun)Bocu.usuario).getFavoritos().split(",");
+
+        int veces = Bocu.eventos.size();
+
+        for (String idEvento : idEventosFavoritos)
+            for(int i = 0; i < veces; i++)
+                if(Integer.parseInt(idEvento) == Bocu.eventos.get(i).getId()) {
+                    Bocu.eventosFavoritos.insert(Bocu.eventos.get(i));
+                    eventosExistentes += idEvento + ",";
+                }
+
+        eventosExistentes = eventosExistentes.substring(0, eventosExistentes.length() - 1);
+
+        ((UsuarioComun)Bocu.usuario).setFavoritos(eventosExistentes);
+
+        DbUsuariosComunes dbUsuariosComunes = new DbUsuariosComunes(newInstance().getContext());
+        dbUsuariosComunes.actualizarEventosFavoritos(Bocu.usuario.getCorreoElectronico(), eventosExistentes);
+
+    }
+
     private void deshabilitarSetError (TextInputEditText textInputEditText, TextInputLayout textInputLayout){
         textInputEditText.addTextChangedListener(new TextWatcher() {
             @Override
