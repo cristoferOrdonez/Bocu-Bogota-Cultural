@@ -15,8 +15,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.example.datastructureproject_groupb.Bocu;
+import com.example.datastructureproject_groupb.adaptadores.AdaptadorPaginaPrincipal;
 import com.example.datastructureproject_groupb.entidades.evento.CrearEventosPresencial;
 import com.example.datastructureproject_groupb.entidades.evento.CrearEventosVirtual;
 import com.example.datastructureproject_groupb.R;
@@ -48,19 +50,35 @@ public class EventosFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.fragment_eventos, container, false);
 
-        botonCrearEvento = root.findViewById(R.id.imageButtonCrearEvento);
+        if(Bocu.estadoUsuario==Bocu.ARTISTA){
+            botonCrearEvento = root.findViewById(R.id.imageButtonCrearEvento);
 
-        botonCrearEvento.setOnClickListener(view -> mostrarDialogo());
 
-        showFadeInAnimation(botonCrearEvento, 500);
+            botonCrearEvento.setOnClickListener(view -> mostrarDialogo());
 
-        listaEventos = root.findViewById(R.id.RecyclerViewEventosPaginaEventos);
+            showFadeInAnimation(botonCrearEvento, 500);
 
-        listaEventos.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, true));
+            listaEventos = root.findViewById(R.id.RecyclerViewEventosPaginaEventos);
 
-        AdaptadorPaginaEventos adapter = new AdaptadorPaginaEventos(Bocu.eventosExpositor);
-        listaEventos.setAdapter(adapter);
-        listaEventos.scrollToPosition(Bocu.eventosExpositor.size() - 1);
+            listaEventos.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, true));
+
+            AdaptadorPaginaEventos adapter = new AdaptadorPaginaEventos(Bocu.eventosExpositor);
+            listaEventos.setAdapter(adapter);
+            listaEventos.scrollToPosition(Bocu.eventosExpositor.size() - 1);
+        } else{
+            botonCrearEvento = root.findViewById(R.id.imageButtonCrearEvento);
+            botonCrearEvento.setVisibility(View.INVISIBLE);
+            if(Bocu.eventosFavoritos!=null){
+                listaEventos = root.findViewById(R.id.RecyclerViewEventosPaginaEventos);
+
+                listaEventos.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, true));
+
+                AdaptadorPaginaPrincipal adapter = new AdaptadorPaginaPrincipal(Bocu.eventosFavoritos);
+                listaEventos.setAdapter(adapter);
+            }
+
+        }
+
 
         return root;
 

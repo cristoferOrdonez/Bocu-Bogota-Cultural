@@ -106,6 +106,20 @@ public class AdaptadorPaginaPrincipal extends RecyclerView.Adapter<AdaptadorPagi
                 if(Bocu.usuario instanceof UsuarioComun) {
 
                     favorito = false;
+                    if(Bocu.eventosFavoritos!=null){
+                        for (int i=0; i<Bocu.eventosFavoritos.size(); i++){
+                            if(Bocu.eventosFavoritos.get(i).equals(evento)){
+                                favorito = true;
+                                break;
+                            }
+                        }
+
+                    }
+
+                    if (!favorito)
+                        botonFavorito.setImageResource(R.drawable.icono_no_favorito_boton);
+                    else
+                        botonFavorito.setImageResource(R.drawable.icono_favorito_boton);
 
                     botonFavorito.setOnClickListener(i -> {
                         if (favorito)
