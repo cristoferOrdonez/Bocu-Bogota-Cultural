@@ -84,6 +84,9 @@ public class DbSesion extends DbArt{
                     UsuarioRegistrado usuarioRegistrado = dbUsuariosComunes.verUsuario(correo);
                     Bocu.usuario = usuarioRegistrado;
                     Bocu.estadoUsuario = Bocu.USUARIO_COMUN;
+
+                    CuentaFragment.establecerEventosFavoritos();
+
                 } else {
                     
                     // NO OLVIDAR ACCEDER MEDIANTE LA ESTRUCTURA
