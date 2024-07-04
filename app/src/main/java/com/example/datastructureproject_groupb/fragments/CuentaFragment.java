@@ -1,5 +1,6 @@
 package com.example.datastructureproject_groupb.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -50,7 +51,6 @@ public class CuentaFragment extends Fragment {
     ArrayAdapter<String> interesesAdapter;
     LinearLayout linearLayoutBotonesCuenta, linearLayoutBotonesEdicion;
     TextInputLayout layoutNombre, layoutCorreoElectronico, layoutContrasena, layoutConfirmarContrasena, layoutTipoEvento, layoutLocalidad, layoutIntereses, layoutApellido, layoutEdad;
-
 
     public CuentaFragment() {
     }
@@ -660,6 +660,7 @@ public class CuentaFragment extends Fragment {
         Bocu.estadoUsuario = tipoUsuario;
         if (getContext() != null) {
             if (tipoUsuario == Bocu.USUARIO_COMUN) {
+                establecerEventosFavoritos(getContext());
                 Toast.makeText(getContext(), "Ingreso correctamente como Usuario", Toast.LENGTH_SHORT).show();
             } else {
                 establecerEventosExpositor();
@@ -834,29 +835,32 @@ public class CuentaFragment extends Fragment {
 
     }
 
-    public static void establecerEventosFavoritos(){
+    public static void establecerEventosFavoritos(Context context){
 
         Bocu.eventosFavoritos = new DynamicUnsortedList<>();
 
-        String eventosExistentes = "";
+        if(!((UsuarioComun)Bocu.usuario).getFavoritos().isEmpty()) {
+            String eventosExistentes = "";
 
-        String[] idEventosFavoritos = ((UsuarioComun)Bocu.usuario).getFavoritos().split(",");
+            String[] idEventosFavoritos = ((UsuarioComun) Bocu.usuario).getFavoritos().split(",");
 
-        int veces = Bocu.eventos.size();
+            int veces = Bocu.eventos.size();
 
-        for (String idEvento : idEventosFavoritos)
-            for(int i = 0; i < veces; i++)
-                if(Integer.parseInt(idEvento) == Bocu.eventos.get(i).getId()) {
-                    Bocu.eventosFavoritos.insert(Bocu.eventos.get(i));
-                    eventosExistentes += idEvento + ",";
-                }
+            for (String idEvento : idEventosFavoritos)
+                for (int i = 0; i < veces; i++)
+                    if (Integer.parseInt(idEvento) == Bocu.eventos.get(i).getId()) {
+                        Bocu.eventosFavoritos.insert(Bocu.eventos.get(i));
+                        eventosExistentes += idEvento + ",";
+                    }
 
-        eventosExistentes = eventosExistentes.substring(0, eventosExistentes.length() - 1);
+            eventosExistentes = eventosExistentes.substring(0, eventosExistentes.length() - 1);
 
-        ((UsuarioComun)Bocu.usuario).setFavoritos(eventosExistentes);
+            ((UsuarioComun) Bocu.usuario).setFavoritos(eventosExistentes);
 
-        DbUsuariosComunes dbUsuariosComunes = new DbUsuariosComunes(newInstance().getContext());
-        dbUsuariosComunes.actualizarEventosFavoritos(Bocu.usuario.getCorreoElectronico(), eventosExistentes);
+            DbUsuariosComunes dbUsuariosComunes = new DbUsuariosComunes(context);
+
+            dbUsuariosComunes.actualizarEventosFavoritos(Bocu.usuario.getCorreoElectronico(), eventosExistentes);
+        }
 
     }
 

@@ -35,6 +35,8 @@ public class AdaptadorPaginaPrincipal extends RecyclerView.Adapter<AdaptadorPagi
     DynamicUnsortedList<Evento> listaEventos;
     private boolean favorito;
 
+    AlertDialog dialog;
+
     public AdaptadorPaginaPrincipal(DynamicUnsortedList<Evento> listaEventos) {
         this.listaEventos = listaEventos;
     }
@@ -109,26 +111,38 @@ public class AdaptadorPaginaPrincipal extends RecyclerView.Adapter<AdaptadorPagi
                 if(Bocu.usuario instanceof UsuarioComun) {
 
                     favorito = false;
-                    if(Bocu.eventosFavoritos!=null){
-                        for (int i=0; i<Bocu.eventosFavoritos.size(); i++){
-                            if(Bocu.eventosFavoritos.get(i).equals(evento)){
-                                favorito = true;
-                                break;
+
+                    if(Bocu.eventosFavoritos == listaEventos)
+                        favorito = true;
+                    else {
+
+                        if (Bocu.eventosFavoritos != null) {
+                            for (int i = 0; i < Bocu.eventosFavoritos.size(); i++) {
+                                if (Bocu.eventosFavoritos.get(i).equals(evento)) {
+                                    favorito = true;
+                                    break;
+                                }
                             }
                         }
 
                     }
 
-                    if (!favorito)
-                        botonFavorito.setImageResource(R.drawable.icono_no_favorito_boton);
-                    else
-                        botonFavorito.setImageResource(R.drawable.icono_favorito_boton);
-
-                    botonFavorito.setOnClickListener(i -> {
-                        if (favorito)
+                        if (!favorito)
                             botonFavorito.setImageResource(R.drawable.icono_no_favorito_boton);
                         else
                             botonFavorito.setImageResource(R.drawable.icono_favorito_boton);
+
+                    botonFavorito.setOnClickListener(i -> {
+                        if (favorito) {
+                            botonFavorito.setImageResource(R.drawable.icono_no_favorito_boton);
+                            if(eliminarEventoFavorito(getAdapterPosition(), v.getContext(), Bocu.eventosFavoritos == listaEventos)) {
+                                dialog.dismiss();
+                                notifyDataSetChanged();
+                            }
+                        } else {
+                            botonFavorito.setImageResource(R.drawable.icono_favorito_boton);
+                            añadirEventoFavorito(getAdapterPosition(), v.getContext(), Bocu.eventosFavoritos == listaEventos);
+                        }
 
                         favorito = !favorito;
                     });
@@ -160,7 +174,7 @@ public class AdaptadorPaginaPrincipal extends RecyclerView.Adapter<AdaptadorPagi
 
                 builder.setView(view);
 
-                AlertDialog dialog = builder.create();
+                dialog = builder.create();
 
                 WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
                 layoutParams.copyFrom(dialog.getWindow().getAttributes());
@@ -184,7 +198,7 @@ public class AdaptadorPaginaPrincipal extends RecyclerView.Adapter<AdaptadorPagi
         }
     }
 
-    private void eliminarEventoFavorito(int position, Context context, boolean isAdapterFavoriteEvents){
+    private boolean eliminarEventoFavorito(int position, Context context, boolean isAdapterFavoriteEvents){
 
         String idEvento = String.valueOf(listaEventos.get(position).getId());
 
@@ -197,7 +211,7 @@ public class AdaptadorPaginaPrincipal extends RecyclerView.Adapter<AdaptadorPagi
         else if(!idEventos.isEmpty()) {
             if (idEventos.charAt(0) == ',')
                 idEventos = idEventos.substring(1, idEventos.length());
-            else if (idEventos.charAt(idEventos.length()) == ',')
+            else if (idEventos.charAt(idEventos.length() - 1) == ',')
                 idEventos = idEventos.substring(0, idEventos.length() - 1);
         }
 
@@ -208,13 +222,20 @@ public class AdaptadorPaginaPrincipal extends RecyclerView.Adapter<AdaptadorPagi
 
         if(isAdapterFavoriteEvents) {
             listaEventos.remove(position);
-            notify();
+
+            return true;
+
         } else {
             Evento evento = Bocu.eventos.get(position);
             int veces = Bocu.eventosFavoritos.size();
             for(int i = 0; i < veces; i++)
-                if(evento == Bocu.eventosFavoritos.get(i))
+                if (evento == Bocu.eventosFavoritos.get(i)) {
                     Bocu.eventosFavoritos.remove(i);
+                    break;
+                }
+
+            return false;
+
         }
 
     }
@@ -234,13 +255,13 @@ public class AdaptadorPaginaPrincipal extends RecyclerView.Adapter<AdaptadorPagi
         }
 
         String idEventos = ((UsuarioComun)Bocu.usuario).getFavoritos();
-        idEventos = (idEventos.isEmpty())?"":"," + idEvento;
+        idEventos += ((idEventos.isEmpty())?"":",") + idEvento;
 
         ((UsuarioComun)Bocu.usuario).setFavoritos(idEventos);
 
         DbUsuariosComunes dbUsuariosComunes = new DbUsuariosComunes(context);
         dbUsuariosComunes.actualizarEventosFavoritos(Bocu.usuario.getCorreoElectronico(), idEventos);
-        
+
     }
 
     private void showFadeInAnimation(View view, long duration){

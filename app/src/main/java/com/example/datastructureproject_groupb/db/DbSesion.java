@@ -85,7 +85,7 @@ public class DbSesion extends DbArt{
                     Bocu.usuario = usuarioRegistrado;
                     Bocu.estadoUsuario = Bocu.USUARIO_COMUN;
 
-                    CuentaFragment.establecerEventosFavoritos();
+                    CuentaFragment.establecerEventosFavoritos(context);
 
                 } else {
                     
