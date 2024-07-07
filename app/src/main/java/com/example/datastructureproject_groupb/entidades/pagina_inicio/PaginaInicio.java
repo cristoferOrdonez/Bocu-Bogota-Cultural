@@ -5,6 +5,7 @@ import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -61,6 +62,12 @@ public class PaginaInicio extends AppCompatActivity{
 
         if(Bocu.estadoUsuario == Bocu.SIN_REGISTRAR)
             menu.getMenu().removeItem(R.id.menuEventos);
+
+        if(Bocu.estadoUsuario == Bocu.USUARIO_COMUN)
+            menu.getMenu().findItem(R.id.menuEventos).setIcon(getDrawable(R.drawable.icono_no_favorito_boton));
+
+        if(Bocu.estadoUsuario == Bocu.ARTISTA)
+            menu.getMenu().findItem(R.id.menuEventos).setIcon(getDrawable(R.drawable.icono_campana));
     }
 
     private void initView(){

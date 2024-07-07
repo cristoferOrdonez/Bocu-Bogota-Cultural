@@ -8,7 +8,6 @@
     tools:context=".fragments.CuentaFragment">
 
     <TextView
-        android:text="Tu informacion como expositor"
         android:layout_width="match_parent"
         android:layout_height="18dp"
         android:layout_weight="1"
@@ -16,6 +15,7 @@
         android:fontFamily="@font/roslindale_condensed_medium_edu"
         android:paddingHorizontal="45dp"
         android:paddingVertical="20dp"
+        android:text="Tu información como expositor"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="24sp"
