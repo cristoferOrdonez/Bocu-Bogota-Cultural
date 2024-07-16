@@ -11,6 +11,7 @@ import com.example.datastructureproject_groupb.entidades.artista.Artista;
 import com.example.datastructureproject_groupb.entidades.evento.Evento;
 import com.example.datastructureproject_groupb.entidades.info_sesion.UsuarioComun;
 import com.example.datastructureproject_groupb.entidades.info_sesion.UsuarioRegistrado;
+import com.example.datastructureproject_groupb.entidades.pagina_descubrir.OrdenEventos;
 
 public class Bocu extends Application {
 
@@ -24,6 +25,7 @@ public class Bocu extends Application {
     public static UsuarioRegistrado usuario;
     public static int estadoUsuario = SIN_REGISTRAR;
     public static String[] filtrosEventos = new String[]{};
+    public static OrdenEventos ordenEventos;
     public static final String [] LOCALIDADES = new String[]{"Usaquén", "Chapinero", "Santa Fe", "San Cristóbal", "Usme", "Tunjuelito", "Bosa", "Kennedy", "Fontibón", "Engativá", "Suba", "Barrios Unidos", "Teusaquillo", "Los Mártires", "Antonio Nariño", "Puente Aranda", "La Candelaria", "Rafael Uribe Uribe", "Ciudad Bolívar", "Sumapaz"};
 
     public static final String [] INTERESES = new String[]{"Musica", "Talleres"};

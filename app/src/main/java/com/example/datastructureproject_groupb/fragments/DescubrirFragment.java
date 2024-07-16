@@ -1,8 +1,12 @@
 package com.example.datastructureproject_groupb.fragments;
 
+import static com.example.datastructureproject_groupb.entidades.pagina_descubrir.OrdenEventos.ALFABETICO_A_Z;
+
 import android.icu.text.DecimalFormat;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -11,7 +15,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -23,6 +31,7 @@ import com.example.datastructureproject_groupb.ImplementacionesEstructurasDeDato
 import com.example.datastructureproject_groupb.ImplementacionesEstructurasDeDatos.MaxHeapAlfabeticoEventos;
 import com.example.datastructureproject_groupb.ImplementacionesEstructurasDeDatos.MaxHeapFechaEventos;
 import com.example.datastructureproject_groupb.ImplementacionesEstructurasDeDatos.MinHeapFechaEventos;
+import com.example.datastructureproject_groupb.entidades.pagina_descubrir.OrdenEventos;
 
 import com.example.datastructureproject_groupb.ImplementacionesEstructurasDeDatos.MinHeapAlfabeticoEventos;
 import com.example.datastructureproject_groupb.R;
@@ -60,6 +69,7 @@ public class DescubrirFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -156,15 +166,50 @@ public class DescubrirFragment extends Fragment {
 
     public View establecerContenidoEventosFiltrados(LayoutInflater inflater, ViewGroup container) {
         View root = inflater.inflate(R.layout.fragment_eventos_filtrados_pagina_descubrir, container, false);
+        setHasOptionsMenu(true);
 
-        DynamicUnsortedList<Evento> eventosFltrados = aplicarFiltros(Bocu.filtrosEventos);
+        Toolbar toolbar = (Toolbar) root.findViewById(R.id.toolbar_menu_ordenar_eventos);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
+        DynamicUnsortedList<Evento> eventosFiltrados = aplicarFiltros(Bocu.filtrosEventos);
+        DynamicUnsortedList<Evento> eventosOrdenados = new DynamicUnsortedList<Evento>();
+
+        if (Bocu.ordenEventos != null) {
+            switch (Bocu.ordenEventos) {
+                case ALFABETICO_A_Z:
+                    eventosOrdenados = OrdenarEventosA_Z(eventosFiltrados);
+                    break;
+                case ALFABETICO_Z_A:
+                    eventosOrdenados = OrdenarEventosZ_A(eventosFiltrados);
+                    break;
+                case FECHA_RECIENTE:
+                    eventosOrdenados = OrdenarFechaReciente(eventosFiltrados);
+                    break;
+                case FECHA_ANTIGUA:
+                    eventosOrdenados = OrdenarFechaAntigua(eventosFiltrados);
+                    break;
+                case MAYOR_COSTO:
+                    eventosOrdenados = OrdenarEventosA_Z(eventosFiltrados);
+                    break;
+                case MENOR_COSTO:
+                    eventosOrdenados = OrdenarEventosA_Z(eventosFiltrados);
+                    break;
+            }
+        } else {
+            eventosOrdenados = eventosFiltrados;
+        }
 
         listaEventos = root.findViewById(R.id.recyclerViewEventosFiltradosPaginaDescubrir);
 
         listaEventos.setLayoutManager(new LinearLayoutManager(getContext()));
-        AdaptadorPaginaDescubrir adapter = new AdaptadorPaginaDescubrir(eventosFltrados);
-        listaEventos.setAdapter(adapter);
+
+        if (eventosOrdenados.size() != 0) {
+            AdaptadorPaginaDescubrir adapter = new AdaptadorPaginaDescubrir(eventosOrdenados);
+            listaEventos.setAdapter(adapter);
+        } else {
+            AdaptadorPaginaDescubrir adapter = new AdaptadorPaginaDescubrir(eventosFiltrados);
+            listaEventos.setAdapter(adapter);
+        }
 
         botonIniciarFiltros = root.findViewById(R.id.botonFiltrarEventos);
 
@@ -175,6 +220,7 @@ public class DescubrirFragment extends Fragment {
                 openFragment();
             }
         });
+
         return root;
     }
 
@@ -219,14 +265,14 @@ public class DescubrirFragment extends Fragment {
 
     }
 
-    private void openFragment(){
+    private void openFragment() {
         FragmentManager fragmentManager = getParentFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frameContenedor, DescubrirFragment.newInstance());
         fragmentTransaction.commit();
     }
 
-    private void formatoCostoDinero (TextInputEditText textInputCosto){
+    private void formatoCostoDinero(TextInputEditText textInputCosto) {
         textInputCosto.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -274,7 +320,7 @@ public class DescubrirFragment extends Fragment {
         });
     }
 
-    private void deshabilitarSetError (TextInputEditText textInputEditText, TextInputLayout textInputLayout){
+    private void deshabilitarSetError(TextInputEditText textInputEditText, TextInputLayout textInputLayout) {
         textInputEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -295,7 +341,7 @@ public class DescubrirFragment extends Fragment {
         });
     }
 
-    private void deshabilitarSetError (MaterialAutoCompleteTextView materialAutoCompleteTextView, TextInputLayout textInputLayout){
+    private void deshabilitarSetError(MaterialAutoCompleteTextView materialAutoCompleteTextView, TextInputLayout textInputLayout) {
         materialAutoCompleteTextView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -350,17 +396,15 @@ public class DescubrirFragment extends Fragment {
     }
 
     public DynamicUnsortedList<Evento> aplicarFiltros(String[] filtros) {
-        DynamicUnsortedList<Evento> eventos = Bocu.eventos;
-        DynamicUnsortedList<Evento> eventosFiltradosPorNombre = new DynamicUnsortedList<Evento>();
 
-        return eventosFiltradosPorNombre;
+        return Bocu.eventos;
     }
 
     private DynamicUnsortedList<Evento> filtrarEventoPorNombre(String nombre, DynamicUnsortedList<Evento> eventos) {
         DynamicUnsortedList<Evento> eventosFiltrados = new DynamicUnsortedList<Evento>();
 
         if (!nombre.equals("")) {
-            for (int i = 0; i < eventos.size(); i++){
+            for (int i = 0; i < eventos.size(); i++) {
                 if (eventos.get(i).getNombreEvento().toLowerCase().contains(nombre.toLowerCase())) {
                     eventosFiltrados.insert(eventos.get(i));
                 }
@@ -368,6 +412,44 @@ public class DescubrirFragment extends Fragment {
             return eventosFiltrados;
         } else {
             return eventos;
+        }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_orden_pagina_descubrir, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.orden_alfabetico_a_z:
+                Bocu.ordenEventos = ALFABETICO_A_Z;
+                openFragment();
+                return true;
+            case R.id.orden_alfabetico_z_a:
+                Bocu.ordenEventos = OrdenEventos.ALFABETICO_Z_A;
+                openFragment();
+                return true;
+            case R.id.orden_fecha_reciente:
+                Bocu.ordenEventos = OrdenEventos.FECHA_RECIENTE;
+                openFragment();
+                return true;
+            case R.id.orden_fecha_antigua:
+                Bocu.ordenEventos = OrdenEventos.FECHA_ANTIGUA;
+                openFragment();
+                return true;
+            case R.id.orden_mayor_costo:
+                Bocu.ordenEventos = OrdenEventos.MAYOR_COSTO;
+                openFragment();
+                return true;
+            case R.id.orden_menor_costo:
+                Bocu.ordenEventos = OrdenEventos.MENOR_COSTO;
+                openFragment();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }
