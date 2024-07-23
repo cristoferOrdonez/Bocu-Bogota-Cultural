@@ -42,6 +42,8 @@ import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
+
 import java.text.NumberFormat;
 import java.util.Locale;
 
@@ -115,6 +117,26 @@ public class DescubrirFragment extends Fragment {
                 mostrarDatePicker();
         });
         fechaEvento.setOnClickListener(view -> mostrarDatePicker());
+
+        KeyboardVisibilityEvent.setEventListener(getActivity(), isOpen -> {
+            if(isOpen) {
+
+                LinearLayout.LayoutParams nuevoParametro = (LinearLayout.LayoutParams) layoutBoton.getLayoutParams();
+                nuevoParametro.width = 0;
+                nuevoParametro.weight = 0;
+                layoutBoton.setLayoutParams(nuevoParametro);
+
+            } else {
+
+                LinearLayout.LayoutParams nuevoParametro = (LinearLayout.LayoutParams) layoutBoton.getLayoutParams();
+
+                nuevoParametro.width = ViewGroup.LayoutParams.MATCH_PARENT;
+                nuevoParametro.weight = 1.9f;
+
+                layoutBoton.setLayoutParams(nuevoParametro);
+
+            }
+        });
 
         localidadesAdapter = new ArrayAdapter<>(getContext(), R.layout.list_item_dropdown_menu, Bocu.LOCALIDADES);
         spinnerLocalidadEvento.setAdapter(localidadesAdapter);
