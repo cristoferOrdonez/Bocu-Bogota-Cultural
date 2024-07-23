@@ -2,7 +2,6 @@ package com.example.datastructureproject_groupb.fragments;
 
 import static com.example.datastructureproject_groupb.entidades.pagina_descubrir.OrdenEventos.ALFABETICO_A_Z;
 
-import android.icu.text.DecimalFormat;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,7 +27,9 @@ import android.widget.LinearLayout;
 import com.example.datastructureproject_groupb.Bocu;
 import com.example.datastructureproject_groupb.ImplementacionesEstructurasDeDatos.DynamicUnsortedList;
 import com.example.datastructureproject_groupb.ImplementacionesEstructurasDeDatos.MaxHeapAlfabeticoEventos;
+import com.example.datastructureproject_groupb.ImplementacionesEstructurasDeDatos.MaxHeapCostoEventos;
 import com.example.datastructureproject_groupb.ImplementacionesEstructurasDeDatos.MaxHeapFechaEventos;
+import com.example.datastructureproject_groupb.ImplementacionesEstructurasDeDatos.MinHeapCostoEventos;
 import com.example.datastructureproject_groupb.ImplementacionesEstructurasDeDatos.MinHeapFechaEventos;
 import com.example.datastructureproject_groupb.entidades.pagina_descubrir.OrdenEventos;
 
@@ -41,6 +41,8 @@ import com.example.datastructureproject_groupb.pickers.MostrarDatePicker;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
 
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -116,6 +118,26 @@ public class DescubrirFragment extends Fragment {
         });
         fechaEvento.setOnClickListener(view -> mostrarDatePicker());
 
+        KeyboardVisibilityEvent.setEventListener(getActivity(), isOpen -> {
+            if(isOpen) {
+
+                LinearLayout.LayoutParams nuevoParametro = (LinearLayout.LayoutParams) layoutBoton.getLayoutParams();
+                nuevoParametro.width = 0;
+                nuevoParametro.weight = 0;
+                layoutBoton.setLayoutParams(nuevoParametro);
+
+            } else {
+
+                LinearLayout.LayoutParams nuevoParametro = (LinearLayout.LayoutParams) layoutBoton.getLayoutParams();
+
+                nuevoParametro.width = ViewGroup.LayoutParams.MATCH_PARENT;
+                nuevoParametro.weight = 1.9f;
+
+                layoutBoton.setLayoutParams(nuevoParametro);
+
+            }
+        });
+
         localidadesAdapter = new ArrayAdapter<>(getContext(), R.layout.list_item_dropdown_menu, Bocu.LOCALIDADES);
         spinnerLocalidadEvento.setAdapter(localidadesAdapter);
 
@@ -183,16 +205,16 @@ public class DescubrirFragment extends Fragment {
                     eventosOrdenados = OrdenarEventosZ_A(eventosFiltrados);
                     break;
                 case FECHA_RECIENTE:
-                    eventosOrdenados = OrdenarFechaReciente(eventosFiltrados);
+                    eventosOrdenados = OrdenarFechaMasReciente(eventosFiltrados);
                     break;
-                case FECHA_ANTIGUA:
-                    eventosOrdenados = OrdenarFechaAntigua(eventosFiltrados);
+                case FECHA_MENOS_RECIENTE:
+                    eventosOrdenados = OrdenarFechaMenosReciente(eventosFiltrados);
                     break;
                 case MAYOR_COSTO:
-                    eventosOrdenados = OrdenarEventosA_Z(eventosFiltrados);
+                    eventosOrdenados = new MinHeapCostoEventos(eventosFiltrados).heapSort();
                     break;
                 case MENOR_COSTO:
-                    eventosOrdenados = OrdenarEventosA_Z(eventosFiltrados);
+                    eventosOrdenados = new MaxHeapCostoEventos(eventosFiltrados).heapSort();
                     break;
             }
         } else {
@@ -362,7 +384,7 @@ public class DescubrirFragment extends Fragment {
         });
     }
 
-    public static DynamicUnsortedList<Evento> OrdenarFechaReciente(DynamicUnsortedList<Evento> eventosBocu) {
+    public static DynamicUnsortedList<Evento> OrdenarFechaMenosReciente(DynamicUnsortedList<Evento> eventosBocu) {
 
         int size = eventosBocu.size();
         MaxHeapFechaEventos maxHeap = new MaxHeapFechaEventos(size);
@@ -379,7 +401,7 @@ public class DescubrirFragment extends Fragment {
         return eventosOrdenadosFechaReciente;
     }
 
-    public static DynamicUnsortedList<Evento> OrdenarFechaAntigua(DynamicUnsortedList<Evento> eventosBocu) {
+    public static DynamicUnsortedList<Evento> OrdenarFechaMasReciente(DynamicUnsortedList<Evento> eventosBocu) {
         int size = eventosBocu.size();
         MinHeapFechaEventos maxHeap = new MinHeapFechaEventos(size);
 
@@ -437,7 +459,7 @@ public class DescubrirFragment extends Fragment {
                 openFragment();
                 return true;
             case R.id.orden_fecha_antigua:
-                Bocu.ordenEventos = OrdenEventos.FECHA_ANTIGUA;
+                Bocu.ordenEventos = OrdenEventos.FECHA_MENOS_RECIENTE;
                 openFragment();
                 return true;
             case R.id.orden_mayor_costo:

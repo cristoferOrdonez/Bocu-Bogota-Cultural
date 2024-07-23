@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/orden_alfabetico_a_z"
+        android:title="A_Z" />
+    <item
+        android:id="@+id/orden_alfabetico_z_a"
+        android:title="Z_A" />
+
+    <item
+        android:id="@+id/orden_fecha_reciente"
+        android:title="Fecha más próximos" />
+
+    <item
+        android:id="@+id/orden_fecha_antigua"
+        android:title="Fecha menos próximos" />
+    <item
+        android:id="@+id/orden_mayor_costo"
+        android:title="Mayor costo" />
+
+    <item
+        android:id="@+id/orden_menor_costo"
+        android:title="Menor costo" />
+
+</menu>
