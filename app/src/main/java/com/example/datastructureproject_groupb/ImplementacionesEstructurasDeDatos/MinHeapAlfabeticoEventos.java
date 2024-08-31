@@ -52,7 +52,7 @@ public class MinHeapAlfabeticoEventos{
 
     private void heapifyUp() {
         int index = size - 1;
-        while (hasParent(index) && heap[index].getNombreEvento().compareTo(heap[getParentIndex(index)].getNombreEvento()) < 0) {
+        while (hasParent(index) && heap[index].getNombreEvento().toLowerCase().compareTo(heap[getParentIndex(index)].getNombreEvento()) < 0) {
             swap(index, getParentIndex(index));
             index = getParentIndex(index);
         }
@@ -62,11 +62,11 @@ public class MinHeapAlfabeticoEventos{
         int index = 0;
         while (hasLeftChild(index)) {
             int smallerChildIndex = getLeftChildIndex(index);
-            if (hasRightChild(index) && heap[getRightChildIndex(index)].getNombreEvento().compareTo(heap[smallerChildIndex].getNombreEvento()) < 0) {
+            if (hasRightChild(index) && heap[getRightChildIndex(index)].getNombreEvento().toLowerCase().compareTo(heap[smallerChildIndex].getNombreEvento()) < 0) {
                 smallerChildIndex = getRightChildIndex(index);
             }
 
-            if (heap[index].getNombreEvento().compareTo(heap[smallerChildIndex].getNombreEvento()) < 0) {
+            if (heap[index].getNombreEvento().compareTo(heap[smallerChildIndex].getNombreEvento().toLowerCase()) < 0) {
                 break;
             } else {
                 swap(index, smallerChildIndex);

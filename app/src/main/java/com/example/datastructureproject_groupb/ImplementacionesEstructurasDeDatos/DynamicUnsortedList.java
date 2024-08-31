@@ -21,5 +21,4 @@ public class DynamicUnsortedList<T> extends DynamicArray<T>{
         else
             array[index] = array[--size];
     }
-
 }

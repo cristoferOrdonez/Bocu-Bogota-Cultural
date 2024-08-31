@@ -64,5 +64,4 @@ public class DynamicArray<T>{
         else
             return array[index];
     }
-
 }

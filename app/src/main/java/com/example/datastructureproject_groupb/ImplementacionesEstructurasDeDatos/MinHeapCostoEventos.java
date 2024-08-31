@@ -4,21 +4,19 @@ import com.example.datastructureproject_groupb.entidades.evento.Evento;
 
 public class MinHeapCostoEventos {
 
-    private Evento[] heap;
+    private DynamicUnsortedList<Evento> heap;
     private int size;
-    private int capacity;
 
-    public MinHeapCostoEventos(int capacity) {
-        this.capacity = capacity;
+    public MinHeapCostoEventos() {
         this.size = 0;
-        this.heap = new Evento[capacity];
+        this.heap = new DynamicUnsortedList<Evento>();
     }
 
-    public MinHeapCostoEventos(Evento[] arr){
+    public MinHeapCostoEventos(DynamicUnsortedList<Evento> arr){
         heap = arr;
-        size = arr.length;
+        size = arr.size;
 
-        for(int i = (arr.length - 1) / 2; i > -1; i--)
+        for(int i = (arr.size - 1) / 2; i > -1; i--)
             heapifyDown(i);
 
     }
@@ -48,13 +46,13 @@ public class MinHeapCostoEventos {
     }
 
     private void swap(int index1, int index2) {
-        Evento temp = heap[index1];
-        heap[index1] = heap[index2];
-        heap[index2] = temp;
+        Evento temp = heap.get(index1);
+        heap.set(index1, heap.get(index2));
+        heap.set(index2, temp);
     }
 
     private void heapifyUp(int index) {
-        while (hasParent(index) && heap[index].getCostoEvento() < heap[getParentIndex(index)].getCostoEvento()) {
+        while (hasParent(index) && heap.get(index).getCostoEvento() < heap.get(getParentIndex(index)).getCostoEvento()) {
             swap(index, getParentIndex(index));
             index = getParentIndex(index);
         }
@@ -63,11 +61,11 @@ public class MinHeapCostoEventos {
     private void heapifyDown(int index) {
         while (hasLeftChild(index)) {
             int smallerChildIndex = getLeftChildIndex(index);
-            if (hasRightChild(index) && heap[getRightChildIndex(index)].getCostoEvento() < heap[smallerChildIndex].getCostoEvento()) {
+            if (hasRightChild(index) && heap.get(getRightChildIndex(index)).getCostoEvento() < heap.get(smallerChildIndex).getCostoEvento()) {
                 smallerChildIndex = getRightChildIndex(index);
             }
 
-            if (heap[index].getCostoEvento() < heap[smallerChildIndex].getCostoEvento()) {
+            if (heap.get(index).getCostoEvento() < heap.get(smallerChildIndex).getCostoEvento()) {
                 break;
             } else {
                 swap(index, smallerChildIndex);
@@ -78,11 +76,7 @@ public class MinHeapCostoEventos {
     }
 
     public void insert(Evento evento) {
-        if (size == capacity) {
-            throw new IllegalStateException("Heap is full");
-        }
-
-        heap[size] = evento;
+        heap.insert(evento);
         size++;
         heapifyUp(size - 1);
     }
@@ -90,7 +84,7 @@ public class MinHeapCostoEventos {
     public void remove(Evento evento) {
         int index = -1;
         for (int i = 0; i < size; i++) {
-            if (heap[i] == evento) {
+            if (heap.get(i) == evento) {
                 index = i;
                 break;
             }
@@ -100,7 +94,7 @@ public class MinHeapCostoEventos {
             throw new IllegalArgumentException("Value not found in heap");
         }
 
-        heap[index] = heap[size - 1];
+        heap.set(index, heap.get(size - 1));
         size--;
         heapifyDown(index);
     }
@@ -110,8 +104,8 @@ public class MinHeapCostoEventos {
             throw new IllegalStateException("Heap is empty");
         }
 
-        Evento min = heap[0];
-        heap[0] = heap[size - 1];
+        Evento min = heap.get(0);
+        heap.set(0, heap.get(size - 1));
         size--;
         heapifyDown(0);
 
@@ -123,14 +117,14 @@ public class MinHeapCostoEventos {
             throw new IllegalStateException("Heap is empty");
         }
 
-        return heap[0];
+        return heap.get(0);
     }
 
     public boolean isEmpty() {
         return size == 0;
     }
 
-    public Evento[] heapSort(){
+    public DynamicUnsortedList<Evento> heapSort(){
 
         for(int i = size - 1; i > 0; i--){
 
