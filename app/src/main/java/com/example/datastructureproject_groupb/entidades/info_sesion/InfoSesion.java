@@ -5,8 +5,11 @@ public class InfoSesion {
     private String CorreoSesion;
 
     public InfoSesion(long id, int tipoSesion, String correoSesion){
-        TipoSesion=tipoSesion;
-        CorreoSesion=correoSesion;
+        if (correoSesion == null || correoSesion.isEmpty()) {
+            throw new IllegalArgumentException("CorreoSesion cannot be null or empty");
+        }
+        this.TipoSesion = tipoSesion;
+        this.CorreoSesion = correoSesion;
     };
     public int getTipoSesion() {
         return TipoSesion;
