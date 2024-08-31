@@ -29,7 +29,7 @@ public class Bocu extends Application {
     public static final String [] LOCALIDADES = new String[]{"Usaquén", "Chapinero", "Santa Fe", "San Cristóbal", "Usme", "Tunjuelito", "Bosa", "Kennedy", "Fontibón", "Engativá", "Suba", "Barrios Unidos", "Teusaquillo", "Los Mártires", "Antonio Nariño", "Puente Aranda", "La Candelaria", "Rafael Uribe Uribe", "Ciudad Bolívar", "Sumapaz"};
 
     public static final String [] INTERESES = new String[]{"Musica", "Talleres"};
-    public static final String [] PLATAFORMAS = new String[]{"Discord", "Meet", "Skype", "Teems", "Zoom"};
+    public static final String [] PLATAFORMAS = new String[]{"Discord", "Meet", "Skype", "Teams", "Zoom"};
 
     @Override
     public void onCreate() {

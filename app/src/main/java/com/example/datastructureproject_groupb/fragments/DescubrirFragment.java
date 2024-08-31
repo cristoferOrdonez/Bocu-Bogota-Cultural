@@ -177,8 +177,8 @@ public class DescubrirFragment extends Fragment {
                     String localidad = spinnerLocalidadEvento.getText().toString();
                     String costoMinimo = costoMinimoEvento.getText().toString();
                     String costoMaximo = costoMaximoEvento.getText().toString();
-                    String spinner = spinnerCategoriaEvento.getText().toString();
-                    Bocu.filtrosEventos = new String[]{nombre, fecha, localidad, costoMinimo, costoMaximo, spinner};
+                    String categoria = spinnerCategoriaEvento.getText().toString();
+                    Bocu.filtrosEventos = new String[]{nombre, fecha, localidad, costoMinimo, costoMaximo, categoria};
                     openFragment();
                 }
             }
@@ -418,6 +418,26 @@ public class DescubrirFragment extends Fragment {
     }
 
     public DynamicUnsortedList<Evento> aplicarFiltros(String[] filtros) {
+        DynamicUnsortedList<Evento> eventosFiltrados = Bocu.eventos;
+        if (!filtros[0].isEmpty()){
+            eventosFiltrados = filtrarEventoPorNombre(filtros[0], eventosFiltrados);
+        }
+
+        if (!filtros[1].isEmpty()){
+            eventosFiltrados = filtrarEventoPorFecha(filtros[1], eventosFiltrados);
+        }
+
+        if (!filtros[2].isEmpty()){
+            eventosFiltrados = filtrarEventoPorLocalidad(filtros[2], eventosFiltrados);
+        }
+
+        if (!filtros[3].isEmpty() && filtros[4].isEmpty() || filtros[3].isEmpty() && !filtros[4].isEmpty() || !filtros[3].isEmpty()){
+            eventosFiltrados = filtrarEventoPorCosto(filtros[3], filtros[4], eventosFiltrados);
+        }
+
+        if (!filtros[5].isEmpty()){
+            eventosFiltrados = filtrarEventoPorCategoria(filtros[5], eventosFiltrados);
+        }
 
         return Bocu.eventos;
     }
@@ -428,6 +448,80 @@ public class DescubrirFragment extends Fragment {
         if (!nombre.equals("")) {
             for (int i = 0; i < eventos.size(); i++) {
                 if (eventos.get(i).getNombreEvento().toLowerCase().contains(nombre.toLowerCase())) {
+                    eventosFiltrados.insert(eventos.get(i));
+                }
+            }
+            return eventosFiltrados;
+        } else {
+            return eventos;
+        }
+    }
+
+    private DynamicUnsortedList<Evento> filtrarEventoPorFecha(String fecha, DynamicUnsortedList<Evento> eventos) {
+        DynamicUnsortedList<Evento> eventosFiltrados = new DynamicUnsortedList<Evento>();
+
+        if (!fecha.isEmpty()) {
+            for (int i = 0; i < eventos.size(); i++) {
+                if (eventos.get(i).getFechaEvento().toString().equals(fecha)) {
+                    eventosFiltrados.insert(eventos.get(i));
+                }
+            }
+            return eventosFiltrados;
+        } else {
+            return eventos;
+        }
+    }
+
+    private DynamicUnsortedList<Evento> filtrarEventoPorLocalidad(String localidad, DynamicUnsortedList<Evento> eventos) {
+        DynamicUnsortedList<Evento> eventosFiltrados = new DynamicUnsortedList<Evento>();
+
+        if (!localidad.isEmpty()) {
+            for (int i = 0; i < eventos.size(); i++) {
+                if (eventos.get(i).getUbicacionEvento() == localidadesAdapter.getPosition(localidad)) {
+                    eventosFiltrados.insert(eventos.get(i));
+                }
+            }
+            return eventosFiltrados;
+        } else {
+            return eventos;
+        }
+    }
+
+    private DynamicUnsortedList<Evento> filtrarEventoPorCosto(String costoMinimo, String costoMaximo, DynamicUnsortedList<Evento> eventos) {
+        DynamicUnsortedList<Evento> eventosFiltrados = new DynamicUnsortedList<Evento>();
+
+        if (!costoMinimo.isEmpty() && costoMaximo.isEmpty()) {
+            for (int i = 0; i < eventos.size(); i++) {
+                if (eventos.get(i).getCostoEvento() >= Integer.parseInt(costoMinimo)) {
+                    eventosFiltrados.insert(eventos.get(i));
+                }
+            }
+            return eventosFiltrados;
+        } else if (costoMinimo.isEmpty() && !costoMaximo.isEmpty()) {
+            for (int i = 0; i < eventos.size(); i++) {
+                if (eventos.get(i).getCostoEvento() <= Integer.parseInt(costoMaximo)) {
+                    eventosFiltrados.insert(eventos.get(i));
+                }
+            }
+            return eventosFiltrados;
+        } else if (!costoMinimo.isEmpty()) {
+            for (int i = 0; i < eventos.size(); i++) {
+                if (eventos.get(i).getCostoEvento() >= Integer.parseInt(costoMinimo) && eventos.get(i).getCostoEvento() <= Integer.parseInt(costoMaximo)) {
+                    eventosFiltrados.insert(eventos.get(i));
+                }
+            }
+            return eventosFiltrados;
+        } else {
+            return eventos;
+        }
+    }
+
+    private DynamicUnsortedList<Evento> filtrarEventoPorCategoria(String categoria, DynamicUnsortedList<Evento> eventos) {
+        DynamicUnsortedList<Evento> eventosFiltrados = new DynamicUnsortedList<Evento>();
+
+        if (!categoria.isEmpty()) {
+            for (int i = 0; i < eventos.size(); i++) {
+                if (eventos.get(i).getUbicacionEvento() == categoriasAdapter.getPosition(categoria)) {
                     eventosFiltrados.insert(eventos.get(i));
                 }
             }
