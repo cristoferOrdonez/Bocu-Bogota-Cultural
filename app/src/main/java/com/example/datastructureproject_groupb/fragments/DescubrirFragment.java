@@ -199,16 +199,16 @@ public class DescubrirFragment extends Fragment {
         if (Bocu.ordenEventos != null) {
             switch (Bocu.ordenEventos) {
                 case ALFABETICO_A_Z:
-                    eventosOrdenados = OrdenarEventosA_Z(eventosFiltrados);
+                    eventosOrdenados = new MaxHeapAlfabeticoEventos(eventosFiltrados).heapSort();
                     break;
                 case ALFABETICO_Z_A:
-                    eventosOrdenados = OrdenarEventosZ_A(eventosFiltrados);
+                    eventosOrdenados = new MinHeapAlfabeticoEventos(eventosFiltrados).heapSort();
                     break;
                 case FECHA_RECIENTE:
-                    eventosOrdenados = OrdenarFechaMasReciente(eventosFiltrados);
+                    eventosOrdenados = new MinHeapFechaEventos(eventosFiltrados).heapSort();
                     break;
                 case FECHA_MENOS_RECIENTE:
-                    eventosOrdenados = OrdenarFechaMenosReciente(eventosFiltrados);
+                    eventosOrdenados = new MaxHeapFechaEventos(eventosFiltrados).heapSort();
                     break;
                 case MAYOR_COSTO:
                     eventosOrdenados = new MinHeapCostoEventos(eventosFiltrados).heapSort();
@@ -248,43 +248,6 @@ public class DescubrirFragment extends Fragment {
 
     private void mostrarDatePicker() {
         MostrarDatePicker datePicker = new MostrarDatePicker(getContext(), this.fechaEvento, this.fecha);
-    }
-
-    public static DynamicUnsortedList<Evento> OrdenarEventosA_Z(DynamicUnsortedList<Evento> entradaFiltrada) {
-        int size = entradaFiltrada.size();
-        MinHeapAlfabeticoEventos minHeap = new MinHeapAlfabeticoEventos(size);
-
-
-        for (int i = 0; i < size; i++) {
-            minHeap.insert(entradaFiltrada.get(i));
-        }
-
-        DynamicUnsortedList<Evento> eventosOrdenadosA_Z = new DynamicUnsortedList<Evento>();
-
-        for (int i = 0; i < size; i++) {
-            eventosOrdenadosA_Z.insert(minHeap.extractMin());
-        }
-
-        return eventosOrdenadosA_Z;
-
-    }
-
-    public static DynamicUnsortedList<Evento> OrdenarEventosZ_A(DynamicUnsortedList<Evento> entradaFiltrada) {
-        int size = entradaFiltrada.size();
-        MaxHeapAlfabeticoEventos maxHeap = new MaxHeapAlfabeticoEventos(size);
-
-        for (int i = 0; i < size; i++) {
-            maxHeap.insert(entradaFiltrada.get(i));
-        }
-
-        DynamicUnsortedList<Evento> eventosOrdenadosZ_A = new DynamicUnsortedList<Evento>();
-
-        for (int i = 0; i < size; i++) {
-            eventosOrdenadosZ_A.insert(maxHeap.extractMax());
-        }
-        return eventosOrdenadosZ_A;
-
-
     }
 
     private void openFragment() {
@@ -382,39 +345,6 @@ public class DescubrirFragment extends Fragment {
                 // No es necesario
             }
         });
-    }
-
-    public static DynamicUnsortedList<Evento> OrdenarFechaMenosReciente(DynamicUnsortedList<Evento> eventosBocu) {
-
-        int size = eventosBocu.size();
-        MaxHeapFechaEventos maxHeap = new MaxHeapFechaEventos(size);
-
-        for (int i = 0; i < size; i++) {
-            maxHeap.insert(eventosBocu.get(i));
-        }
-
-        DynamicUnsortedList<Evento> eventosOrdenadosFechaReciente = new DynamicUnsortedList<Evento>();
-
-        for (int i = 0; i < size; i++) {
-            eventosOrdenadosFechaReciente.insert(maxHeap.extractMax());
-        }
-        return eventosOrdenadosFechaReciente;
-    }
-
-    public static DynamicUnsortedList<Evento> OrdenarFechaMasReciente(DynamicUnsortedList<Evento> eventosBocu) {
-        int size = eventosBocu.size();
-        MinHeapFechaEventos maxHeap = new MinHeapFechaEventos(size);
-
-        for (int i = 0; i < size; i++) {
-            maxHeap.insert(eventosBocu.get(i));
-        }
-
-        DynamicUnsortedList<Evento> eventosOrdenadosFechaAntigua = new DynamicUnsortedList<Evento>();
-
-        for (int i = 0; i < size; i++) {
-            eventosOrdenadosFechaAntigua.insert(maxHeap.extractMin());
-        }
-        return eventosOrdenadosFechaAntigua;
     }
 
     public DynamicUnsortedList<Evento> aplicarFiltros(String[] filtros) {
