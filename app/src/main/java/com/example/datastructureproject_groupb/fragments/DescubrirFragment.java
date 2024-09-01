@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import com.example.datastructureproject_groupb.Bocu;
@@ -52,7 +53,8 @@ public class DescubrirFragment extends Fragment {
     TextInputEditText nombreEvento, fechaEvento, costoMinimoEvento, costoMaximoEvento;
     MaterialAutoCompleteTextView spinnerLocalidadEvento, spinnerCategoriaEvento;
     private Integer[] fecha = {0, -1, 0};
-    Button botonAceptarFiltros, botonIniciarFiltros;
+    Button botonAceptarFiltros;
+    ImageButton botonIniciarFiltros;
     private ArrayAdapter<String> categoriasAdapter, costoAdapter, localidadesAdapter;
     private LinearLayout layoutBoton, layoutCostoEvento;
     private TextInputLayout layoutNombreEvento, layoutFechaEvento, layoutCostoMinimoEvento, layoutCostoMaximoEvento, layoutLocalidadEvento, layoutTipoEvento;
@@ -197,7 +199,7 @@ public class DescubrirFragment extends Fragment {
         DynamicUnsortedList<Evento> eventosOrdenados = new DynamicUnsortedList<Evento>();
 
         if (Bocu.ordenEventos != null) {
-            switch (Bocu.ordenEventos) {
+            switch (Bocu.ordenEventos) { //SI NO RESPONDO ES PORQUE NO ESTOY
                 case ALFABETICO_A_Z:
                     eventosOrdenados = new MaxHeapAlfabeticoEventos(eventosFiltrados).heapSort();
                     break;
@@ -369,7 +371,7 @@ public class DescubrirFragment extends Fragment {
             eventosFiltrados = filtrarEventoPorCategoria(filtros[5], eventosFiltrados);
         }
 
-        return Bocu.eventos;
+        return eventosFiltrados;
     }
 
     private DynamicUnsortedList<Evento> filtrarEventoPorNombre(String nombre, DynamicUnsortedList<Evento> eventos) {
@@ -418,7 +420,7 @@ public class DescubrirFragment extends Fragment {
     }
 
     private DynamicUnsortedList<Evento> filtrarEventoPorCosto(String costoMinimo, String costoMaximo, DynamicUnsortedList<Evento> eventos) {
-        DynamicUnsortedList<Evento> eventosFiltrados = new DynamicUnsortedList<Evento>();
+        DynamicUnsortedList<Evento> eventosFiltrados = new DynamicUnsortedList<>();
 
         if (!costoMinimo.isEmpty() && costoMaximo.isEmpty()) {
             for (int i = 0; i < eventos.size(); i++) {

@@ -103,6 +103,8 @@ public class EditarEventosVirtual extends AppCompatActivity {
 
         horaMinutosFinal[1] = Integer.parseInt(horaFinalS.substring(horaFinalS.indexOf(':') + 1, horaFinalS.indexOf('.') - 1));
 
+
+
         fechaEvento.setText(getIntent().getStringExtra("FECHA_EVENTO"));
 
         costoEvento = findViewById(R.id.editTextCostoEvento);
