@@ -199,7 +199,7 @@ public class DescubrirFragment extends Fragment {
         DynamicUnsortedList<Evento> eventosOrdenados = new DynamicUnsortedList<Evento>();
 
         if (Bocu.ordenEventos != null) {
-            switch (Bocu.ordenEventos) { //SI NO RESPONDO ES PORQUE NO ESTOY
+            switch (Bocu.ordenEventos) {
                 case ALFABETICO_A_Z:
                     eventosOrdenados = new MaxHeapAlfabeticoEventos(eventosFiltrados).heapSort();
                     break;
@@ -394,7 +394,7 @@ public class DescubrirFragment extends Fragment {
 
         if (!fecha.isEmpty()) {
             for (int i = 0; i < eventos.size(); i++) {
-                if (eventos.get(i).getFechaEvento().toString().equals(fecha)) {
+                if (eventos.get(i).getFechaEventoString().equals(fecha)) {
                     eventosFiltrados.insert(eventos.get(i));
                 }
             }
@@ -405,6 +405,8 @@ public class DescubrirFragment extends Fragment {
     }
 
     private DynamicUnsortedList<Evento> filtrarEventoPorLocalidad(String localidad, DynamicUnsortedList<Evento> eventos) {
+        localidadesAdapter = new ArrayAdapter<>(getContext(), R.layout.list_item_dropdown_menu, Bocu.LOCALIDADES);
+
         DynamicUnsortedList<Evento> eventosFiltrados = new DynamicUnsortedList<Evento>();
 
         if (!localidad.isEmpty()) {
@@ -420,7 +422,9 @@ public class DescubrirFragment extends Fragment {
     }
 
     private DynamicUnsortedList<Evento> filtrarEventoPorCosto(String costoMinimo, String costoMaximo, DynamicUnsortedList<Evento> eventos) {
-        DynamicUnsortedList<Evento> eventosFiltrados = new DynamicUnsortedList<>();
+        DynamicUnsortedList<Evento> eventosFiltrados = new DynamicUnsortedList<Evento>();
+        costoMaximo = costoMaximo.replaceAll("\\.", "");
+        costoMinimo = costoMinimo.replaceAll("\\.", "");
 
         if (!costoMinimo.isEmpty() && costoMaximo.isEmpty()) {
             for (int i = 0; i < eventos.size(); i++) {
@@ -449,11 +453,13 @@ public class DescubrirFragment extends Fragment {
     }
 
     private DynamicUnsortedList<Evento> filtrarEventoPorCategoria(String categoria, DynamicUnsortedList<Evento> eventos) {
+        categoriasAdapter = new ArrayAdapter<>(getContext(), R.layout.list_item_dropdown_menu, Bocu.INTERESES);
+
         DynamicUnsortedList<Evento> eventosFiltrados = new DynamicUnsortedList<Evento>();
 
         if (!categoria.isEmpty()) {
             for (int i = 0; i < eventos.size(); i++) {
-                if (eventos.get(i).getUbicacionEvento() == categoriasAdapter.getPosition(categoria)) {
+                if (eventos.get(i).getCategoriaEvento() == categoriasAdapter.getPosition(categoria)) {
                     eventosFiltrados.insert(eventos.get(i));
                 }
             }

@@ -17,7 +17,7 @@ public class MinHeapCostoEventos {
         size = arr.size;
 
         for(int i = (arr.size - 1) / 2; i > -1; i--)
-            heapifyDown(i);
+            siftDown(i);
 
     }
 
@@ -51,14 +51,14 @@ public class MinHeapCostoEventos {
         heap.set(index2, temp);
     }
 
-    private void heapifyUp(int index) {
+    private void siftUp(int index) {
         while (hasParent(index) && heap.get(index).getCostoEvento() < heap.get(getParentIndex(index)).getCostoEvento()) {
             swap(index, getParentIndex(index));
             index = getParentIndex(index);
         }
     }
 
-    private void heapifyDown(int index) {
+    private void siftDown(int index) {
         while (hasLeftChild(index)) {
             int smallerChildIndex = getLeftChildIndex(index);
             if (hasRightChild(index) && heap.get(getRightChildIndex(index)).getCostoEvento() < heap.get(smallerChildIndex).getCostoEvento()) {
@@ -78,7 +78,7 @@ public class MinHeapCostoEventos {
     public void insert(Evento evento) {
         heap.insert(evento);
         size++;
-        heapifyUp(size - 1);
+        siftUp(size - 1);
     }
 
     public void remove(Evento evento) {
@@ -96,7 +96,7 @@ public class MinHeapCostoEventos {
 
         heap.set(index, heap.get(size - 1));
         size--;
-        heapifyDown(index);
+        siftDown(index);
     }
 
     public Evento extractMin() {
@@ -107,7 +107,7 @@ public class MinHeapCostoEventos {
         Evento min = heap.get(0);
         heap.set(0, heap.get(size - 1));
         size--;
-        heapifyDown(0);
+        siftDown(0);
 
         return min;
     }
@@ -130,7 +130,7 @@ public class MinHeapCostoEventos {
 
             swap(0, i);
             size--;
-            heapifyDown(0);
+            siftDown(0);
 
         }
 

@@ -3,9 +3,6 @@ package com.example.datastructureproject_groupb.ImplementacionesEstructurasDeDat
 
 import com.example.datastructureproject_groupb.entidades.evento.Evento;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class MaxHeapAlfabeticoEventos {
     private DynamicUnsortedList<Evento> heap;
     private int size;
@@ -21,7 +18,7 @@ public class MaxHeapAlfabeticoEventos {
         size = arr.size();
 
         for(int i = (arr.size() - 1) / 2; i > -1; i--)
-            heapifyDown(i);
+            siftDown(i);
 
     }
 
@@ -31,7 +28,7 @@ public class MaxHeapAlfabeticoEventos {
 
             swap(0, i);
             size--;
-            heapifyDown(0);
+            siftDown(0);
 
         }
 
@@ -50,7 +47,7 @@ public class MaxHeapAlfabeticoEventos {
 
         heap.insert(value);
         size++;
-        heapifyUp(size - 1);
+        siftUp(size - 1);
     }
 
     public Evento remove(Evento evento) {
@@ -71,9 +68,9 @@ public class MaxHeapAlfabeticoEventos {
         size--;
 
         if (index < size) {
-            heapifyDown(index);
+            siftDown(index);
             if (heap.get(index).getCostoEvento() < heap.get((index - 1) / 2).getCostoEvento()) {
-                heapifyUp(index);
+                siftUp(index);
             }
         }
 
@@ -88,12 +85,12 @@ public class MaxHeapAlfabeticoEventos {
         Evento max = heap.get(0);
         heap.set(0, heap.get(size - 1));
         size--;
-        heapifyDown(0);
+        siftDown(0);
 
         return max;
     }
 
-    private void heapifyUp(int index) {
+    private void siftUp(int index) {
         int parentIndex = (index - 1) / 2;
         while (index > 0 && heap.get(index).getNombreEvento().compareToIgnoreCase(heap.get(parentIndex).getNombreEvento()) > 0) {
             swap(index, parentIndex);
@@ -102,17 +99,19 @@ public class MaxHeapAlfabeticoEventos {
         }
     }
 
-    private void heapifyDown(int index) {
+    private void siftDown(int index) {
         int largest = index;
         while (true) {
             int leftChildIndex = 2 * largest + 1;
             int rightChildIndex = 2 * largest + 2;
 
-            if (leftChildIndex < size && heap.get(leftChildIndex).getNombreEvento().compareToIgnoreCase(heap.get(largest).getNombreEvento()) > 0) {
+            if (leftChildIndex < size &&
+                    heap.get(leftChildIndex).getNombreEvento().compareToIgnoreCase(heap.get(largest).getNombreEvento()) > 0) {
                 largest = leftChildIndex;
             }
 
-            if (rightChildIndex < size && heap.get(rightChildIndex).getNombreEvento().compareToIgnoreCase(heap.get(largest).getNombreEvento()) > 0) {
+            if (rightChildIndex < size &&
+                    heap.get(rightChildIndex).getNombreEvento().compareToIgnoreCase(heap.get(largest).getNombreEvento()) > 0) {
                 largest = rightChildIndex;
             }
 
