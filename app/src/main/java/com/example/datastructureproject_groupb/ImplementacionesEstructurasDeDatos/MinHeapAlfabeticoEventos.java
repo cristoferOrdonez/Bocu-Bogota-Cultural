@@ -2,9 +2,6 @@ package com.example.datastructureproject_groupb.ImplementacionesEstructurasDeDat
 
 import com.example.datastructureproject_groupb.entidades.evento.Evento;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class MinHeapAlfabeticoEventos{
     private DynamicUnsortedList<Evento> heap;
     private int size;
@@ -18,7 +15,7 @@ public class MinHeapAlfabeticoEventos{
         size = arr.size();
 
         for(int i = (arr.size() - 1) / 2; i > -1; i--)
-            heapifyDown(i);
+            siftDown(i);
 
     }
 
@@ -28,7 +25,7 @@ public class MinHeapAlfabeticoEventos{
 
             swap(0, i);
             size--;
-            heapifyDown(0);
+            siftDown(0);
 
         }
 
@@ -66,17 +63,19 @@ public class MinHeapAlfabeticoEventos{
         heap.set(index2, temp);
     }
 
-    private void heapifyUp(int index) {
-        while (hasParent(index) && heap.get(index).getNombreEvento().compareToIgnoreCase(heap.get(getParentIndex(index)).getNombreEvento()) < 0) {
+    private void siftUp(int index) {
+        while (hasParent(index) &&
+                heap.get(index).getNombreEvento().compareToIgnoreCase(heap.get(getParentIndex(index)).getNombreEvento()) < 0) {
             swap(index, getParentIndex(index));
             index = getParentIndex(index);
         }
     }
 
-    private void heapifyDown(int index) {
+    private void siftDown(int index) {
         while (hasLeftChild(index)) {
             int smallerChildIndex = getLeftChildIndex(index);
-            if (hasRightChild(index) && heap.get(getRightChildIndex(index)).getNombreEvento().compareToIgnoreCase(heap.get(smallerChildIndex).getNombreEvento()) < 0) {
+            if (hasRightChild(index) &&
+                heap.get(getRightChildIndex(index)).getNombreEvento().compareToIgnoreCase(heap.get(smallerChildIndex).getNombreEvento()) < 0) {
                 smallerChildIndex = getRightChildIndex(index);
             }
 
@@ -94,7 +93,7 @@ public class MinHeapAlfabeticoEventos{
 
         heap.insert(value);
         size++;
-        heapifyUp(size - 1);
+        siftUp(size - 1);
     }
 
     public Evento remove(Evento evento) {
@@ -115,9 +114,9 @@ public class MinHeapAlfabeticoEventos{
         size--;
 
         if (index < size) {
-            heapifyDown(index);
+            siftDown(index);
             if (heap.get(index).getCostoEvento() < heap.get((index - 1) / 2).getCostoEvento()) {
-                heapifyUp(index);
+                siftUp(index);
             }
         }
 
@@ -132,7 +131,7 @@ public class MinHeapAlfabeticoEventos{
         Evento min = heap.get(0);
         heap.set(0, heap.get(size - 1));
         size--;
-        heapifyDown(0);
+        siftDown(0);
 
         return min;
     }

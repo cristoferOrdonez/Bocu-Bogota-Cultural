@@ -17,7 +17,7 @@ public class MinHeapFechaEventos {
         size = arr.size();
 
         for(int i = (arr.size() - 1) / 2; i > -1; i--)
-            heapifyDown(i);
+            siftDown(i);
 
     }
 
@@ -27,7 +27,7 @@ public class MinHeapFechaEventos {
 
             swap(0, i);
             size--;
-            heapifyDown(0);
+            siftDown(0);
 
         }
 
@@ -51,7 +51,7 @@ public class MinHeapFechaEventos {
 
         heap.insert(evento);
         size++;
-        heapifyUp(size - 1);
+        siftUp(size - 1);
     }
 
     public Evento remove(Evento evento) {
@@ -72,9 +72,9 @@ public class MinHeapFechaEventos {
         size--;
 
         if (index < size) {
-            heapifyDown(index);
+            siftDown(index);
             if (heap.get(index).getCostoEvento() < heap.get((index - 1) / 2).getCostoEvento()) {
-                heapifyUp(index);
+                siftUp(index);
             }
         }
 
@@ -89,12 +89,12 @@ public class MinHeapFechaEventos {
         Evento max = heap.get(0);
         heap.set(0, heap.get(size - 1));
         size--;
-        heapifyDown(0);
+        siftDown(0);
 
         return max;
     }
 
-    private void heapifyUp(int index) {
+    private void siftUp(int index) {
         int parentIndex = (index - 1) / 2;
         while (index > 0 && heap.get(index).getFechaEvento().before(heap.get(parentIndex).getFechaEvento())) {
             swap(index, parentIndex);
@@ -103,7 +103,7 @@ public class MinHeapFechaEventos {
         }
     }
 
-    private void heapifyDown(int index) {
+    private void siftDown(int index) {
         int largest = index;
         while (true) {
             int leftChildIndex = 2 * largest + 1;
