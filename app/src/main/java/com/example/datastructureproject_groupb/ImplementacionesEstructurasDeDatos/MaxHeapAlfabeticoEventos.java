@@ -9,19 +9,16 @@ import java.util.Map;
 public class MaxHeapAlfabeticoEventos {
     private DynamicUnsortedList<Evento> heap;
     private int size;
-    private Map<Evento, Integer> indexMap;
 
     public MaxHeapAlfabeticoEventos() {
         heap = new DynamicUnsortedList<>();
         size = 0;
-        indexMap = new HashMap<>();
     }
 
 
     public MaxHeapAlfabeticoEventos(DynamicUnsortedList<Evento> arr){
         heap = arr;
         size = arr.size();
-        indexMap = new HashMap<>();
 
         for(int i = (arr.size() - 1) / 2; i > -1; i--)
             heapifyDown(i);
@@ -52,31 +49,35 @@ public class MaxHeapAlfabeticoEventos {
     public void insert(Evento value) {
 
         heap.insert(value);
-        indexMap.put(value, size);
         size++;
         heapifyUp(size - 1);
     }
 
-    public Evento remove(Evento value) {
-        Integer index = indexMap.get(value);
-        if (index == null) {
+    public Evento remove(Evento evento) {
+        int index = -1;
+        for (int i = 0; i < size; i++) {
+            if (heap.get(i) == evento) {
+                index = i;
+                break;
+            }
+        }
+
+        if (index == -1) {
             throw new IllegalArgumentException("Value not found in the heap");
         }
 
-        Evento removedValue = heap.get(index);
+        Evento removedEvento = heap.get(index);
         heap.set(index, heap.get(size - 1));
-        indexMap.put(heap.get(size - 1), index);
-        indexMap.remove(value);
         size--;
 
         if (index < size) {
             heapifyDown(index);
-            if (index > 0 && heap.get(index).getNombreEvento().toLowerCase().compareTo(heap.get((index - 1) / 2).getNombreEvento()) > 0) {
+            if (heap.get(index).getCostoEvento() < heap.get((index - 1) / 2).getCostoEvento()) {
                 heapifyUp(index);
             }
         }
 
-        return removedValue;
+        return removedEvento;
     }
 
     public Evento extractMax() {
@@ -86,8 +87,6 @@ public class MaxHeapAlfabeticoEventos {
 
         Evento max = heap.get(0);
         heap.set(0, heap.get(size - 1));
-        indexMap.put(heap.get(size - 1), 0);
-        indexMap.remove(max);
         size--;
         heapifyDown(0);
 
@@ -130,8 +129,6 @@ public class MaxHeapAlfabeticoEventos {
         Evento temp = heap.get(i);
         heap.set(i,heap.get(j));
         heap.set(j, temp);
-        indexMap.put(heap.get(i), i);
-        indexMap.put(heap.get(j), j);
     }
 
 }

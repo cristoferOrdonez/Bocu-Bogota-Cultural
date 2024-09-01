@@ -8,20 +8,17 @@ import java.util.Map;
 public class MinHeapAlfabeticoEventos{
     private DynamicUnsortedList<Evento> heap;
     private int size;
-    private Map<Evento, Integer> indexMap;
 
     public MinHeapAlfabeticoEventos() {
         this.size = 0;
         this.heap = new DynamicUnsortedList<>();
-        this.indexMap = new HashMap<>();
     }
     public MinHeapAlfabeticoEventos(DynamicUnsortedList<Evento> arr){
         heap = arr;
         size = arr.size();
-        indexMap = new HashMap<>();
 
         for(int i = (arr.size() - 1) / 2; i > -1; i--)
-            heapifyDown();
+            heapifyDown(i);
 
     }
 
@@ -31,7 +28,7 @@ public class MinHeapAlfabeticoEventos{
 
             swap(0, i);
             size--;
-            heapifyDown();
+            heapifyDown(0);
 
         }
 
@@ -67,20 +64,16 @@ public class MinHeapAlfabeticoEventos{
         Evento temp = heap.get(index1);
         heap.set(index1, heap.get(index2));
         heap.set(index2, temp);
-        indexMap.put(heap.get(index1), index1);
-        indexMap.put(heap.get(index2), index2);
     }
 
-    private void heapifyUp() {
-        int index = size - 1;
+    private void heapifyUp(int index) {
         while (hasParent(index) && heap.get(index).getNombreEvento().compareToIgnoreCase(heap.get(getParentIndex(index)).getNombreEvento()) < 0) {
             swap(index, getParentIndex(index));
             index = getParentIndex(index);
         }
     }
 
-    private void heapifyDown() {
-        int index = 0;
+    private void heapifyDown(int index) {
         while (hasLeftChild(index)) {
             int smallerChildIndex = getLeftChildIndex(index);
             if (hasRightChild(index) && heap.get(getRightChildIndex(index)).getNombreEvento().compareToIgnoreCase(heap.get(smallerChildIndex).getNombreEvento()) < 0) {
@@ -100,22 +93,35 @@ public class MinHeapAlfabeticoEventos{
     public void insert(Evento value) {
 
         heap.insert(value);
-        indexMap.put(value, size);
         size++;
-        heapifyUp();
+        heapifyUp(size - 1);
     }
 
-    public void remove(Evento value) {
-        Integer index = indexMap.get(value);
-        if (index == null) {
-            throw new IllegalArgumentException("Value not found in heap");
+    public Evento remove(Evento evento) {
+        int index = -1;
+        for (int i = 0; i < size; i++) {
+            if (heap.get(i) == evento) {
+                index = i;
+                break;
+            }
         }
 
+        if (index == -1) {
+            throw new IllegalArgumentException("Value not found in the heap");
+        }
+
+        Evento removedEvento = heap.get(index);
         heap.set(index, heap.get(size - 1));
-        indexMap.put(heap.get(size - 1), index);
-        indexMap.remove(value);
         size--;
-        heapifyDown();
+
+        if (index < size) {
+            heapifyDown(index);
+            if (heap.get(index).getCostoEvento() < heap.get((index - 1) / 2).getCostoEvento()) {
+                heapifyUp(index);
+            }
+        }
+
+        return removedEvento;
     }
 
     public Evento extractMin() {
@@ -125,10 +131,8 @@ public class MinHeapAlfabeticoEventos{
 
         Evento min = heap.get(0);
         heap.set(0, heap.get(size - 1));
-        indexMap.put(heap.get(size - 1), 0);
-        indexMap.remove(min);
         size--;
-        heapifyDown();
+        heapifyDown(0);
 
         return min;
     }
