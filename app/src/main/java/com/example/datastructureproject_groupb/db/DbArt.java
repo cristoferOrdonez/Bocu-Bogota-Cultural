@@ -9,7 +9,7 @@ import androidx.annotation.Nullable;
 
 public class DbArt extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION=5;
+    private static final int DATABASE_VERSION=10;
     private static final String DATABASE_NOMBRE = "datos.db";
 
     public static final String TABLE_USUARIOS = "t_usuarios";
@@ -62,7 +62,7 @@ public class DbArt extends SQLiteOpenHelper {
                 "descripcionEvento TEXT NOT NULL," + //10
                 "correoAutor TEXT NOT NULL)"); //11
 
-        sqLiteDatabase.execSQL("CREATE TABLE " + TABLE_INFO_SESION + "(" +
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_INFO_SESION + "(" +
                 "idUsuario INTEGER PRIMARY KEY," + //0
                 "tipoSesion INTEGER NOT NULL, " + //1
                 "CorreoSesion TEXT NOT NULL)"); //7
@@ -73,6 +73,8 @@ public class DbArt extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+ TABLE_EVENTOS);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_USUARIOS);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_ARTISTAS);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_INFO_SESION);
+
 
         onCreate(sqLiteDatabase);
     }

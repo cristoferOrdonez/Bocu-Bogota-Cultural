@@ -4,24 +4,23 @@ import com.example.datastructureproject_groupb.entidades.evento.Evento;
 
 public class MaxHeapCostoEventos {
 
-    private Evento[] heap;
+    private DynamicUnsortedList<Evento> heap;
     private int size;
 
-    public MaxHeapCostoEventos(int capacity) {
-        heap = new Evento[capacity];
+    public MaxHeapCostoEventos() {
         size = 0;
     }
 
-    public MaxHeapCostoEventos(Evento[] arr){
+    public MaxHeapCostoEventos(DynamicUnsortedList<Evento> arr){
         heap = arr;
-        size = arr.length;
+        size = arr.size;
 
-        for(int i = (arr.length - 1) / 2; i > -1; i--)
+        for(int i = (arr.size - 1) / 2; i > -1; i--)
             heapifyDown(i);
 
     }
 
-    public Evento[] heapSort(){
+    public DynamicUnsortedList<Evento> heapSort(){
 
         for(int i = size - 1; i > 0; i--){
 
@@ -45,11 +44,7 @@ public class MaxHeapCostoEventos {
     }
 
     public void insert(Evento evento) {
-        if (size == heap.length) {
-            throw new IllegalStateException("Heap is full");
-        }
-
-        heap[size] = evento;
+        heap.insert(evento);
         size++;
         heapifyUp(size - 1);
     }
@@ -57,7 +52,7 @@ public class MaxHeapCostoEventos {
     public Evento remove(Evento evento) {
         int index = -1;
         for (int i = 0; i < size; i++) {
-            if (heap[i] == evento) {
+            if (heap.get(i) == evento) {
                 index = i;
                 break;
             }
@@ -67,13 +62,13 @@ public class MaxHeapCostoEventos {
             throw new IllegalArgumentException("Value not found in the heap");
         }
 
-        Evento removedEvento = heap[index];
-        heap[index] = heap[size - 1];
+        Evento removedEvento = heap.get(index);
+        heap.set(index, heap.get(size - 1));
         size--;
 
         if (index < size) {
             heapifyDown(index);
-            if (heap[index].getCostoEvento() < heap[(index - 1) / 2].getCostoEvento()) {
+            if (heap.get(index).getCostoEvento() < heap.get((index - 1) / 2).getCostoEvento()) {
                 heapifyUp(index);
             }
         }
@@ -86,8 +81,8 @@ public class MaxHeapCostoEventos {
             throw new IllegalStateException("Heap is empty");
         }
 
-        Evento max = heap[0];
-        heap[0] = heap[size - 1];
+        Evento max = heap.get(0);
+        heap.set(0, heap.get(size - 1));
         size--;
         heapifyDown(0);
 
@@ -96,7 +91,7 @@ public class MaxHeapCostoEventos {
 
     private void heapifyUp(int index) {
         int parentIndex = (index - 1) / 2;
-        while (index > 0 && heap[index].getCostoEvento() > heap[parentIndex].getCostoEvento()) {
+        while (index > 0 && heap.get(index).getCostoEvento() > heap.get(parentIndex).getCostoEvento()) {
             swap(index, parentIndex);
             index = parentIndex;
             parentIndex = (index - 1) / 2;
@@ -109,11 +104,11 @@ public class MaxHeapCostoEventos {
             int leftChildIndex = 2 * largest + 1;
             int rightChildIndex = 2 * largest + 2;
 
-            if (leftChildIndex < size && heap[leftChildIndex].getCostoEvento() > heap[largest].getCostoEvento()) {
+            if (leftChildIndex < size && heap.get(leftChildIndex).getCostoEvento() > heap.get(largest).getCostoEvento()) {
                 largest = leftChildIndex;
             }
 
-            if (rightChildIndex < size && heap[rightChildIndex].getCostoEvento() > heap[largest].getCostoEvento()) {
+            if (rightChildIndex < size && heap.get(rightChildIndex).getCostoEvento() > heap.get(largest).getCostoEvento()) {
                 largest = rightChildIndex;
             }
 
@@ -127,12 +122,12 @@ public class MaxHeapCostoEventos {
     }
 
     private void swap(int i, int j) {
-        Evento temp = heap[i];
-        heap[i] = heap[j];
-        heap[j] = temp;
+        Evento temp = heap.get(i);
+        heap.set(i, heap.get(j));
+        heap.set(j, temp);
     }
 
-    public Evento[] getHeap() {
+    public DynamicUnsortedList<Evento> getHeap() {
         return heap;
     }
 

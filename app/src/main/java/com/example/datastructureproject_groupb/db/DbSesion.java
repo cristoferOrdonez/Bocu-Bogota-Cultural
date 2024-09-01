@@ -77,6 +77,7 @@ public class DbSesion extends DbArt{
             DbUsuariosComunes dbUsuariosComunes= new DbUsuariosComunes(context);
 
             correo=cursorInfo.getString(2);
+
             if (verificarSesionActiva()) {
                 if (infoSesion.getTipoSesion() == Bocu.USUARIO_COMUN) {
                     

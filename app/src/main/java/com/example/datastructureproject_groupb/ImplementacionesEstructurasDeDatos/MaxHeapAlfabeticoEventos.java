@@ -50,7 +50,7 @@ public class MaxHeapAlfabeticoEventos {
 
         if (index < size) {
             heapifyDown(index);
-            if (index > 0 && heap[index].getNombreEvento().compareTo(heap[(index - 1) / 2].getNombreEvento()) > 0) {
+            if (index > 0 && heap[index].getNombreEvento().toLowerCase().compareTo(heap[(index - 1) / 2].getNombreEvento()) > 0) {
                 heapifyUp(index);
             }
         }
@@ -75,7 +75,7 @@ public class MaxHeapAlfabeticoEventos {
 
     private void heapifyUp(int index) {
         int parentIndex = (index - 1) / 2;
-        while (index > 0 && heap[index].getNombreEvento().compareTo(heap[parentIndex].getNombreEvento()) > 0) {
+        while (index > 0 && heap[index].getNombreEvento().compareToIgnoreCase(heap[parentIndex].getNombreEvento()) > 0) {
             swap(index, parentIndex);
             index = parentIndex;
             parentIndex = (index - 1) / 2;
@@ -88,11 +88,11 @@ public class MaxHeapAlfabeticoEventos {
             int leftChildIndex = 2 * largest + 1;
             int rightChildIndex = 2 * largest + 2;
 
-            if (leftChildIndex < size && heap[leftChildIndex].getNombreEvento().compareTo(heap[largest].getNombreEvento()) > 0) {
+            if (leftChildIndex < size && heap[leftChildIndex].getNombreEvento().compareToIgnoreCase(heap[largest].getNombreEvento()) > 0) {
                 largest = leftChildIndex;
             }
 
-            if (rightChildIndex < size && heap[rightChildIndex].getNombreEvento().compareTo(heap[largest].getNombreEvento()) > 0) {
+            if (rightChildIndex < size && heap[rightChildIndex].getNombreEvento().compareToIgnoreCase(heap[largest].getNombreEvento()) > 0) {
                 largest = rightChildIndex;
             }
 
