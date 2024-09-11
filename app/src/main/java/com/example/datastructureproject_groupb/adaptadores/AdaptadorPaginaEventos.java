@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.datastructureproject_groupb.Bocu;
+import com.example.datastructureproject_groupb.db.DbEventosFavoritos;
 import com.example.datastructureproject_groupb.entidades.evento.EditarEventosPresencial;
 import com.example.datastructureproject_groupb.entidades.evento.EditarEventosVirtual;
 import com.example.datastructureproject_groupb.ImplementacionesEstructurasDeDatos.DynamicUnsortedList;
@@ -80,6 +81,7 @@ public class AdaptadorPaginaEventos extends RecyclerView.Adapter<AdaptadorPagina
                             }
 
                             new DbEventos(v.getContext()).eliminarEvento(evento.getId());
+                            new DbEventosFavoritos(v.getContext()).eliminarEventosFav(evento.getId());
                             notifyDataSetChanged();
                         }
 

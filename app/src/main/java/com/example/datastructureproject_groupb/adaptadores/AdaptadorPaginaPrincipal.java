@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.datastructureproject_groupb.Bocu;
 import com.example.datastructureproject_groupb.ImplementacionesEstructurasDeDatos.DynamicUnsortedList;
+import com.example.datastructureproject_groupb.db.DbEventosFavoritos;
 import com.example.datastructureproject_groupb.db.DbUsuariosComunes;
 import com.example.datastructureproject_groupb.entidades.evento.MostrarUbicacionEvento;
 import com.example.datastructureproject_groupb.R;
@@ -116,14 +117,7 @@ public class AdaptadorPaginaPrincipal extends RecyclerView.Adapter<AdaptadorPagi
                         favorito = true;
                     else {
 
-                        if (Bocu.eventosFavoritos != null) {
-                            for (int i = 0; i < Bocu.eventosFavoritos.size(); i++) {
-                                if (Bocu.eventosFavoritos.get(i).equals(evento)) {
-                                    favorito = true;
-                                    break;
-                                }
-                            }
-                        }
+                        favorito = (Bocu.idFavoritos.hasKey(evento.getId()));
 
                     }
 
@@ -200,25 +194,9 @@ public class AdaptadorPaginaPrincipal extends RecyclerView.Adapter<AdaptadorPagi
 
     private boolean eliminarEventoFavorito(int position, Context context, boolean isAdapterFavoriteEvents){
 
-        String idEvento = String.valueOf(listaEventos.get(position).getId());
+        Bocu.idFavoritos.remove(listaEventos.get(position).getId());
 
-        String idEventos = ((UsuarioComun)Bocu.usuario).getFavoritos();
-        idEventos = idEventos.replace(idEvento, "");
-        idEventos = idEventos.replace(",,",",");
-
-        if(idEventos.length() == 1 && idEventos.charAt(0) == ',')
-            idEventos = "";
-        else if(!idEventos.isEmpty()) {
-            if (idEventos.charAt(0) == ',')
-                idEventos = idEventos.substring(1, idEventos.length());
-            else if (idEventos.charAt(idEventos.length() - 1) == ',')
-                idEventos = idEventos.substring(0, idEventos.length() - 1);
-        }
-
-        ((UsuarioComun)Bocu.usuario).setFavoritos(idEventos);
-
-        DbUsuariosComunes dbUsuariosComunes = new DbUsuariosComunes(context);
-        dbUsuariosComunes.actualizarEventosFavoritos(Bocu.usuario.getCorreoElectronico(), idEventos);
+        new DbEventosFavoritos(context).eliminarEventoFav(Bocu.usuario.getCorreoElectronico(), listaEventos.get(position).getId());
 
         if(isAdapterFavoriteEvents) {
             listaEventos.remove(position);
@@ -242,11 +220,11 @@ public class AdaptadorPaginaPrincipal extends RecyclerView.Adapter<AdaptadorPagi
     
     private void añadirEventoFavorito(int position, Context context, boolean isAdapterFavoriteEvents){
 
-        String idEvento = String.valueOf(listaEventos.get(position).getId());
+        long idEvento = listaEventos.get(position).getId();
 
         if(isAdapterFavoriteEvents) {
 
-            Toast.makeText(context, "" + position, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(context, "" + position, Toast.LENGTH_SHORT).show();
 
         } else {
 
@@ -254,13 +232,9 @@ public class AdaptadorPaginaPrincipal extends RecyclerView.Adapter<AdaptadorPagi
 
         }
 
-        String idEventos = ((UsuarioComun)Bocu.usuario).getFavoritos();
-        idEventos += ((idEventos.isEmpty())?"":",") + idEvento;
+        Bocu.idFavoritos.put(idEvento);
 
-        ((UsuarioComun)Bocu.usuario).setFavoritos(idEventos);
-
-        DbUsuariosComunes dbUsuariosComunes = new DbUsuariosComunes(context);
-        dbUsuariosComunes.actualizarEventosFavoritos(Bocu.usuario.getCorreoElectronico(), idEventos);
+        new DbEventosFavoritos(context).agregarEventoFav(Bocu.usuario.getCorreoElectronico(), idEvento);
 
     }
 

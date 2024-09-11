@@ -3,6 +3,7 @@ package com.example.datastructureproject_groupb;
 import android.app.Application;
 
 import com.example.datastructureproject_groupb.ImplementacionesEstructurasDeDatos.DynamicUnsortedList;
+import com.example.datastructureproject_groupb.ImplementacionesEstructurasDeDatos.HashSetFavoritos;
 import com.example.datastructureproject_groupb.db.DbEventos;
 import com.example.datastructureproject_groupb.db.DbExpositor;
 import com.example.datastructureproject_groupb.db.DbSesion;
@@ -13,11 +14,14 @@ import com.example.datastructureproject_groupb.entidades.info_sesion.UsuarioComu
 import com.example.datastructureproject_groupb.entidades.info_sesion.UsuarioRegistrado;
 import com.example.datastructureproject_groupb.entidades.pagina_descubrir.OrdenEventos;
 
+import java.util.HashSet;
+
 public class Bocu extends Application {
 
     public final static int SIN_REGISTRAR = 0;
     public final static int USUARIO_COMUN = 1;
     public final static int ARTISTA = 2;
+    public static HashSetFavoritos idFavoritos;
     public static DynamicUnsortedList<Evento> eventos, eventosExpositor, eventosFavoritos;
     public static DynamicUnsortedList<Integer> posicionesEventosExpositor;
     public static DynamicUnsortedList<Artista> expositores;
@@ -27,7 +31,6 @@ public class Bocu extends Application {
     public static String[] filtrosEventos = new String[]{};
     public static OrdenEventos ordenEventos;
     public static final String [] LOCALIDADES = new String[]{"Usaquén", "Chapinero", "Santa Fe", "San Cristóbal", "Usme", "Tunjuelito", "Bosa", "Kennedy", "Fontibón", "Engativá", "Suba", "Barrios Unidos", "Teusaquillo", "Los Mártires", "Antonio Nariño", "Puente Aranda", "La Candelaria", "Rafael Uribe Uribe", "Ciudad Bolívar", "Sumapaz"};
-
     public static final String [] INTERESES = new String[]{"Musica", "Talleres"};
     public static final String [] PLATAFORMAS = new String[]{"Discord", "Meet", "Skype", "Teams", "Zoom"};
 
@@ -50,7 +53,6 @@ public class Bocu extends Application {
 
         DbSesion dbSesion=new DbSesion(getApplicationContext());
         dbSesion.sesionActiva();
-
 
     }
 

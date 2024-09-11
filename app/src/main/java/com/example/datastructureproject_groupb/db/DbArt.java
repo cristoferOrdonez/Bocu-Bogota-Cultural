@@ -15,6 +15,7 @@ public class DbArt extends SQLiteOpenHelper {
     public static final String TABLE_USUARIOS = "t_usuarios";
 
     public static final String TABLE_EVENTOS ="t_eventos";
+    public static final String TABLE_EVENTOS_FAVORITOS = "t_eventos_favoritos";
 
     public static final String TABLE_ARTISTAS="t_artistas";
     public static final String TABLE_INFO_SESION="t_sesion";
@@ -36,8 +37,7 @@ public class DbArt extends SQLiteOpenHelper {
                 "correoUsuarioUsuarios TEXT NOT NULL," + //4
                 "contrasenaUsuario TEXT NOT NULL,"+ //5
                 "localidadUsuario INTEGER NOT NULL," +//6
-                "interesesUsuario INTEGER NOT NULL,"+//7
-                "favoritosUsuario TEXT NOT NULL)" ); //8
+                "interesesUsuario INTEGER NOT NULL)" ); //7
 
 
         sqLiteDatabase.execSQL("CREATE TABLE " + TABLE_ARTISTAS + "(" +
@@ -66,6 +66,12 @@ public class DbArt extends SQLiteOpenHelper {
                 "idUsuario INTEGER PRIMARY KEY," + //0
                 "tipoSesion INTEGER NOT NULL, " + //1
                 "CorreoSesion TEXT NOT NULL)"); //7
+
+        sqLiteDatabase.execSQL("CREATE TABLE " + TABLE_EVENTOS_FAVORITOS + "(" +
+                "idPareja INTEGER PRIMARY KEY AUTOINCREMENT, " + //0
+                "idEventoFavorito BIGINT NOT NULL, " + //1
+                "correoEventoFavorito TEXT NOT NULL)"); //2
+
     }
 
     @Override
@@ -74,7 +80,7 @@ public class DbArt extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_USUARIOS);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_ARTISTAS);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_INFO_SESION);
-
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_EVENTOS_FAVORITOS);
 
         onCreate(sqLiteDatabase);
     }

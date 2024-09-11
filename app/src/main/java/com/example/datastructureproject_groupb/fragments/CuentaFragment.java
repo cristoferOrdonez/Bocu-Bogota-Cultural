@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
+import android.text.BidiFormatter;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -20,6 +21,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.datastructureproject_groupb.Bocu;
+import com.example.datastructureproject_groupb.ImplementacionesEstructurasDeDatos.HashSetFavoritos;
+import com.example.datastructureproject_groupb.db.DbEventosFavoritos;
 import com.example.datastructureproject_groupb.entidades.artista.CrearCuentaExpositor;
 import com.example.datastructureproject_groupb.entidades.evento.Evento;
 import com.example.datastructureproject_groupb.entidades.info_sesion.CrearCuentaUsuario;
@@ -332,6 +335,9 @@ public class CuentaFragment extends Fragment {
                 Bocu.expositores.remove(i);
             }
         }*/
+
+
+
         DbExpositor dbExpositor = new DbExpositor(getContext());
         dbExpositor.eliminarExpositor(artista.getCorreoElectronico());
         DbSesion dbSesion = new DbSesion(getContext());
@@ -346,6 +352,9 @@ public class CuentaFragment extends Fragment {
                 Bocu.usuariosComunes.remove(i);
             }
         }*/
+
+        new DbEventosFavoritos(getContext()).eliminarEventosFav(usuarioRegistrado.getCorreoElectronico());
+
         DbUsuariosComunes dbUsuariosComunes = new DbUsuariosComunes(getContext());
         dbUsuariosComunes.eliminarUsuario(usuarioRegistrado.getCorreoElectronico());
         DbSesion dbSesion = new DbSesion(getContext());
@@ -839,27 +848,16 @@ public class CuentaFragment extends Fragment {
 
         Bocu.eventosFavoritos = new DynamicUnsortedList<>();
 
-        if(!((UsuarioComun)Bocu.usuario).getFavoritos().isEmpty()) {
-            String eventosExistentes = "";
+        Bocu.idFavoritos = new DbEventosFavoritos(context).obtenerEventosFaviritos(Bocu.usuario.getCorreoElectronico());
 
-            String[] idEventosFavoritos = ((UsuarioComun) Bocu.usuario).getFavoritos().split(",");
+        if(!Bocu.idFavoritos.isEmpty()) {
 
             int veces = Bocu.eventos.size();
 
-            for (String idEvento : idEventosFavoritos)
-                for (int i = 0; i < veces; i++)
-                    if (Integer.parseInt(idEvento) == Bocu.eventos.get(i).getId()) {
-                        Bocu.eventosFavoritos.insert(Bocu.eventos.get(i));
-                        eventosExistentes += idEvento + ",";
-                    }
+            for(int i = 0; i < veces; i++)
+                if(Bocu.idFavoritos.hasKey(Bocu.eventos.get(i).getId()))
+                    Bocu.eventosFavoritos.insert(Bocu.eventos.get(i));
 
-            eventosExistentes = eventosExistentes.substring(0, eventosExistentes.length() - 1);
-
-            ((UsuarioComun) Bocu.usuario).setFavoritos(eventosExistentes);
-
-            DbUsuariosComunes dbUsuariosComunes = new DbUsuariosComunes(context);
-
-            dbUsuariosComunes.actualizarEventosFavoritos(Bocu.usuario.getCorreoElectronico(), eventosExistentes);
         }
 
     }
