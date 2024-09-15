@@ -62,7 +62,7 @@ public class HashTableUsuarios{
     }
 
 
-    private int h(String str){
+    /*private int h(String str){
 
         int p = nearestPrime((int)Math.pow(10, str.length()));
         int x = this.x / p;
@@ -71,15 +71,24 @@ public class HashTableUsuarios{
 
     }
 
+     */
 
-    /*
+
+/*
     private int h(String str){
         return str.hashCode() % table.length;
+    }*/
+
+
+    private int h(String str){
+        return (str.hashCode() & 0x7fffffff) % table.length;
     }
-    */
+
 
 
     private boolean isPrime(int n) {
+        if (n <= 1) return false;
+        if (n <= 3) return true;
 
         if (n%2==0)
             return false;
@@ -92,7 +101,7 @@ public class HashTableUsuarios{
     }
 
     private int nearestPrime(int n){
-
+        if (n <= 1) return 2;
         int prime = n;
 
         while(!isPrime(prime))
@@ -102,7 +111,7 @@ public class HashTableUsuarios{
 
     }
 
-    public void put(String key, String value){
+    /*public void put(String key, String value){
 
         if(hasKey(key)){
             System.out.println("This key is already set");
@@ -136,9 +145,33 @@ public class HashTableUsuarios{
 
         size++;
 
+    }*/
+
+    //put versión 2
+    public void put(String key, String value) {
+        if (((double) size) / table.length > loadFactor) {
+            reHash();
+        }
+
+        int hash = h(key);
+        Node node = table[hash];
+
+        while (node != null) {
+            if (key.equalsIgnoreCase(node.data.key)) {
+                node.data.value = value;
+                return;
+            }
+            node = node.next;
+        }
+
+        Node newNode = new Node();
+        newNode.data = new Set(key, value);
+        newNode.next = table[hash];
+        table[hash] = newNode;
+        size++;
     }
 
-    public boolean hasKey(String key){
+    /*public boolean hasKey(String key){
 
         Node node = table[h(key)];
 
@@ -161,6 +194,19 @@ public class HashTableUsuarios{
 
         }
 
+    }*/
+    //haskey versión2
+    public boolean hasKey(String key) {
+        int hash = h(key);
+        Node node = table[hash];
+
+        while (node != null) {
+            if (key.equalsIgnoreCase(node.data.key)) {
+                return true;
+            }
+            node = node.next;
+        }
+        return false;
     }
 
     public String get(String key){
@@ -189,8 +235,6 @@ public class HashTableUsuarios{
     }
 
     private void reHash(){
-
-        System.out.println("Rehash");
 
         size = 0;
 
