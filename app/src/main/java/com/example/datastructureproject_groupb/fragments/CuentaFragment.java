@@ -698,10 +698,12 @@ public class CuentaFragment extends Fragment {
     public void revisar(){
 
         int opcion = verificarExistencia();
+
         if (opcion > -1) {
             if (opcion == 0) {
                 UsuarioComun usuario = verUsuarioComun(correoElectronicoAcceder.getText().toString().toLowerCase());
-                if (contrasenaAcceder.getText().toString().equals(usuario.getContrasena())) {
+
+                if (contrasenaAcceder.getText().toString().equals(Bocu.idUsuarios.get(correoElectronicoAcceder.getText().toString()))) {
                     acceder(usuario, Bocu.USUARIO_COMUN);
                     DbSesion dbSesion= new DbSesion(getContext());
                     dbSesion.mantenerSesionIniciada(1, correoElectronicoAcceder.getText().toString().toLowerCase());
@@ -710,7 +712,7 @@ public class CuentaFragment extends Fragment {
                 }
             } else if (opcion == 1) {
                 Artista artista = verExpositor(correoElectronicoAcceder.getText().toString().toLowerCase());
-                if (contrasenaAcceder.getText().toString().equals(artista.getContrasena())) {
+                if (contrasenaAcceder.getText().toString().equals(Bocu.idUsuarios.get(correoElectronicoAcceder.getText().toString()))){
                     acceder(artista, Bocu.ARTISTA);
                     DbSesion dbSesion= new DbSesion(getContext());
                     dbSesion.mantenerSesionIniciada(2, correoElectronicoAcceder.getText().toString().toLowerCase());
@@ -724,6 +726,8 @@ public class CuentaFragment extends Fragment {
             Toast.makeText(getContext(), "El correo electronico ingresado no se encuentra registrado.", Toast.LENGTH_SHORT).show();
 
         }
+
+
 
     }
 
@@ -762,8 +766,6 @@ public class CuentaFragment extends Fragment {
 
     public int verificarExistencia(){
 
-        /*
-
         LinkedList<String> correosArtista = new LinkedList<>(), correosUsuario = new LinkedList<>();
 
         int veces = Bocu.expositores.size();
@@ -798,12 +800,8 @@ public class CuentaFragment extends Fragment {
 
         return -1;
 
-        */
 
-        if (Bocu.idUsuarios.hasKey(correoElectronicoAcceder.getText().toString()))
-                return 1;
-        else
-            return -1;
+
 
 
     }
