@@ -50,6 +50,7 @@ public class DbExpositor extends DbArt {
             e.printStackTrace();
         } finally {
             db.close();
+            Bocu.idUsuarios.remove(correoExpositor);
         }
         return eliminado;
     }
@@ -73,6 +74,8 @@ public class DbExpositor extends DbArt {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        Bocu.idUsuarios.put(correoExpositor,contrasenaExpositor);
 
         return id;
     }
@@ -99,6 +102,8 @@ public class DbExpositor extends DbArt {
             correcto = false;
         } finally {
             db.close();
+            Bocu.idUsuarios.remove(correoInicial);
+            Bocu.idUsuarios.put(correoExpositor,contrasenaExpositor);
         }
 
         return correcto;

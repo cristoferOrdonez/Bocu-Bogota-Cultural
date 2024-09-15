@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 
 import com.example.datastructureproject_groupb.Bocu;
 import com.example.datastructureproject_groupb.ImplementacionesEstructurasDeDatos.DynamicUnsortedList;
+import com.example.datastructureproject_groupb.ImplementacionesEstructurasDeDatos.HashTableUsuarios;
 import com.example.datastructureproject_groupb.ImplementacionesEstructurasDeDatos.LinkedList;
 import com.example.datastructureproject_groupb.entidades.info_sesion.UsuarioComun;
 
@@ -41,6 +42,27 @@ public class DbUsuariosComunes extends DbArt {
         return usuariosComunes;
 
     }
+
+    public HashTableUsuarios obtenerUsuariosComunesHash(){
+        DbArt dbHelper = new DbArt(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        HashTableUsuarios idUsuarios = new HashTableUsuarios();
+
+        Cursor cursorUsuarios = db.rawQuery("SELECT * FROM " + TABLE_USUARIOS, null);
+
+        if (cursorUsuarios.moveToFirst()) {
+            do {
+                idUsuarios.put(cursorUsuarios.getString(4), cursorUsuarios.getString(5));
+            } while (cursorUsuarios.moveToNext());
+        }
+
+        db.close();
+
+        return idUsuarios;
+
+    }
+
+
     public boolean eliminarUsuario(String correoUsuario) {
         boolean eliminado = false;
         SQLiteDatabase db = getWritableDatabase();
@@ -51,6 +73,7 @@ public class DbUsuariosComunes extends DbArt {
             e.printStackTrace();
         } finally {
             db.close();
+            Bocu.idUsuarios.remove(correoUsuario);
         }
         return eliminado;
     }
@@ -77,6 +100,8 @@ public class DbUsuariosComunes extends DbArt {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        Bocu.idUsuarios.put(correoUsuario,contrasenaUsuario);
 
         return id;
 
@@ -124,6 +149,8 @@ public class DbUsuariosComunes extends DbArt {
             correcto = false;
         } finally {
             db.close();
+            Bocu.idUsuarios.remove(correoInicial);
+            Bocu.idUsuarios.put(correoUsuario,contrasenaUsuario);
         }
 
         return correcto;

@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.example.datastructureproject_groupb.ImplementacionesEstructurasDeDatos.DynamicUnsortedList;
 import com.example.datastructureproject_groupb.ImplementacionesEstructurasDeDatos.HashSetFavoritos;
+import com.example.datastructureproject_groupb.ImplementacionesEstructurasDeDatos.HashTableUsuarios;
 import com.example.datastructureproject_groupb.db.DbEventos;
 import com.example.datastructureproject_groupb.db.DbExpositor;
 import com.example.datastructureproject_groupb.db.DbSesion;
@@ -22,6 +23,7 @@ public class Bocu extends Application {
     public final static int USUARIO_COMUN = 1;
     public final static int ARTISTA = 2;
     public static HashSetFavoritos idFavoritos;
+    public static HashTableUsuarios idUsuarios;
     public static DynamicUnsortedList<Evento> eventos, eventosExpositor, eventosFavoritos;
     public static DynamicUnsortedList<Integer> posicionesEventosExpositor;
     public static DynamicUnsortedList<Artista> expositores;
@@ -50,6 +52,8 @@ public class Bocu extends Application {
         usuariosComunes = dbUsuariosComunes.obtenerUsuariosComunes();
 
         expositores = dbExpositor.obtenerExpositores();
+
+        idUsuarios = dbUsuariosComunes.obtenerUsuariosComunesHash();
 
         DbSesion dbSesion=new DbSesion(getApplicationContext());
         dbSesion.sesionActiva();

@@ -2,7 +2,7 @@ package com.example.datastructureproject_groupb.ImplementacionesEstructurasDeDat
 
 import java.util.Random;
 
-class HashTableUsuarios{
+public class HashTableUsuarios{
 
     private class Set{
 

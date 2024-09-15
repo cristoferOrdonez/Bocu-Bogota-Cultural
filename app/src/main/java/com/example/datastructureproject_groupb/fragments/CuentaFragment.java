@@ -355,6 +355,8 @@ public class CuentaFragment extends Fragment {
 
         new DbEventosFavoritos(getContext()).eliminarEventosFav(usuarioRegistrado.getCorreoElectronico());
 
+        Bocu.idUsuarios.remove(usuarioRegistrado.getCorreoElectronico());
+
         DbUsuariosComunes dbUsuariosComunes = new DbUsuariosComunes(getContext());
         dbUsuariosComunes.eliminarUsuario(usuarioRegistrado.getCorreoElectronico());
         DbSesion dbSesion = new DbSesion(getContext());
@@ -760,6 +762,8 @@ public class CuentaFragment extends Fragment {
 
     public int verificarExistencia(){
 
+        /*
+
         LinkedList<String> correosArtista = new LinkedList<>(), correosUsuario = new LinkedList<>();
 
         int veces = Bocu.expositores.size();
@@ -793,6 +797,14 @@ public class CuentaFragment extends Fragment {
         }
 
         return -1;
+
+        */
+
+        if (Bocu.idUsuarios.hasKey(correoElectronicoAcceder.getText().toString()))
+                return 1;
+        else
+            return -1;
+
 
     }
 
