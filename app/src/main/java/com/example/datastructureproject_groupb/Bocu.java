@@ -33,7 +33,7 @@ public class Bocu extends Application {
     public static String[] filtrosEventos = new String[]{};
     public static OrdenEventos ordenEventos;
     public static final String [] LOCALIDADES = new String[]{"Usaquén", "Chapinero", "Santa Fe", "San Cristóbal", "Usme", "Tunjuelito", "Bosa", "Kennedy", "Fontibón", "Engativá", "Suba", "Barrios Unidos", "Teusaquillo", "Los Mártires", "Antonio Nariño", "Puente Aranda", "La Candelaria", "Rafael Uribe Uribe", "Ciudad Bolívar", "Sumapaz"};
-    public static final String [] INTERESES = new String[]{"Musica", "Talleres"};
+    public static final String [] INTERESES = new String[]{"Musica", "Talleres", "Conferencias y seminarios", "Ferias y Exposiciones", "Clases de cocina", "Proyecciones de cine o documentales"};
     public static final String [] PLATAFORMAS = new String[]{"Discord", "Meet", "Skype", "Teams", "Zoom"};
 
     @Override
