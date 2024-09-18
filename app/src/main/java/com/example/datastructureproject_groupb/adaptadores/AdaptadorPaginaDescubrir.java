@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -94,6 +95,8 @@ public class AdaptadorPaginaDescubrir extends RecyclerView.Adapter<AdaptadorPagi
                         descripcionEvento = view.findViewById(R.id.textViewDescripcionEventoPaginaPrincipal);
 
                 Button boton = view.findViewById(R.id.botonMostrarUbicacion);
+                ImageButton botonFavorito = view.findViewById(R.id.botonFavorito);
+                botonFavorito.setVisibility(View.INVISIBLE);
 
                 if (evento.getUbicacionEvento() != 21) {
                     boton.setOnClickListener(i -> {
