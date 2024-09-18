@@ -9,7 +9,7 @@ import androidx.annotation.Nullable;
 
 public class DbArt extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION=10;
+    private static final int DATABASE_VERSION=12;
     private static final String DATABASE_NOMBRE = "datos.db";
 
     public static final String TABLE_USUARIOS = "t_usuarios";

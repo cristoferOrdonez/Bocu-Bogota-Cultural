@@ -207,10 +207,10 @@ public class DescubrirFragment extends Fragment {
                     eventosOrdenados = new MinHeapAlfabeticoEventos(eventosFiltrados).heapSort();
                     break;
                 case FECHA_RECIENTE:
-                    eventosOrdenados = new MinHeapFechaEventos(eventosFiltrados).heapSort();
+                    eventosOrdenados = new MaxHeapFechaEventos(eventosFiltrados).heapSort();
                     break;
                 case FECHA_MENOS_RECIENTE:
-                    eventosOrdenados = new MaxHeapFechaEventos(eventosFiltrados).heapSort();
+                    eventosOrdenados = new MinHeapFechaEventos(eventosFiltrados).heapSort();
                     break;
                 case MAYOR_COSTO:
                     eventosOrdenados = new MinHeapCostoEventos(eventosFiltrados).heapSort();
