@@ -91,14 +91,14 @@ Se priorizó el uso de tecnologías dominadas por el equipo y adaptables a las l
 
 El corazón de Bocu radica en su diseño estructural eficiente. El uso de estructuras de datos no fue solo académico, sino estratégico:
 
-- **Listas enlazadas**: Evitan duplicados en usuarios y permiten inserciones/borrados eficientes.
-- **Listas desordenadas dinámicas**: Facilitan la visualización flexible y sin bloqueos de los eventos.
-- **Pilas**: Implementan un historial de navegación cultural útil para el usuario curioso o indeciso.
-- **Montículos (MaxHeap / MinHeap)**: Ordenan eventos por criterios (fecha, popularidad, precio) con máxima eficiencia.
-- **Árboles AVL y BST**: Permiten búsquedas rápidas, incluso con volúmenes masivos.
-- **Conjuntos disjuntos**: Usados para relaciones internas y segmentación inteligente de datos.
-- **Tablas hash**: Vitales para autenticación y gestión rápida de favoritos.
-- **Grafos**: Exploración y relaciones entre eventos, categorías, artistas y localidades.
+- **Listas enlazadas**: evitan duplicados en usuarios y permiten inserciones/borrados eficientes.
+- **Listas desordenadas dinámicas**: facilitan la visualización flexible y sin bloqueos de los eventos.
+- **Pilas**: implementan un historial de navegación cultural útil para el usuario curioso o indeciso.
+- **Montículos (MaxHeap / MinHeap)**: ordenan eventos por criterios (fecha, popularidad, precio) con máxima eficiencia.
+- **Árboles AVL y BST**: permiten búsquedas rápidas, incluso con volúmenes masivos.
+- **Conjuntos disjuntos**: usados para relaciones internas y segmentación inteligente de datos.
+- **Tablas hash**: vitales para autenticación y gestión rápida de favoritos.
+- **Grafos**: exploración y relaciones entre eventos, categorías, artistas y localidades.
 
 Este enfoque permitió alcanzar tiempos óptimos de respuesta, reduciendo el uso de memoria y mejorando la experiencia del usuario final.
 
@@ -145,11 +145,11 @@ Cada rol fue definido desde el inicio del proyecto para garantizar división cla
 
 El desarrollo de Bocu fue más que técnico; representó una **experiencia integral de ingeniería, gestión y sensibilidad social**:
 
-- 🛠️ **El análisis asintótico sí importa**: Aplicar teoría de estructuras de datos en un entorno real nos permitió optimizar con fundamentos sólidos.
-- 🤝 **GitHub como pilar de trabajo colaborativo**: Su uso constante permitió evitar conflictos, mantener versiones limpias y fomentar trabajo en paralelo.
-- 🔍 **Las pruebas no son un cierre, son una brújula**: Iterar sobre errores y tiempos nos dio claridad y dirección.
-- 👥 **Roles definidos = productividad real**: Evitamos duplicidad y desorganización, mejorando la eficiencia del grupo.
-- 💡 **Tecnología con empatía**: Traducir un problema cultural en una solución digital nos permitió hacer ingeniería centrada en las personas.
+- 🛠️ **El análisis asintótico sí importa**: aplicar teoría de estructuras de datos en un entorno real nos permitió optimizar con fundamentos sólidos.
+- 🤝 **GitHub como pilar de trabajo colaborativo**: su uso constante permitió evitar conflictos, mantener versiones limpias y fomentar trabajo en paralelo.
+- 🔍 **Las pruebas no son un cierre, son una brújula**: iterar sobre errores y tiempos nos dio claridad y dirección.
+- 👥 **Roles definidos = productividad real**: evitamos duplicidad y desorganización, mejorando la eficiencia del grupo.
+- 💡 **Tecnología con empatía**: traducir un problema cultural en una solución digital nos permitió hacer ingeniería centrada en las personas.
 
 > Este proyecto nos permitió crecer como desarrolladores, como pensadores críticos y como ciudadanos comprometidos con el arte y la cultura.
 
