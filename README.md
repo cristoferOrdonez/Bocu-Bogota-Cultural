@@ -1,4 +1,4 @@
-# 🎨 Bocu - Bogotá Cultural 🇨🇴🏙️
+# 🎨 Bocu - Bogotá Cultural :colombia:🏙️
 
 **Repositorio oficial del proyecto Bocu, una plataforma móvil que visibiliza eventos culturales y artistas emergentes en Bogotá.**
 
