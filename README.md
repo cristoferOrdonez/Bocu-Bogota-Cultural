@@ -12,12 +12,12 @@
 2. [Objetivos](#-objetivos)
 3. [Tipos de Usuario](#-tipos-de-usuario)
 4. [Funcionalidades](#-funcionalidades-principales)
-5. [Tecnologías Utilizadas](#tecnologias-utilizadas)
-6. [Implementación Técnica](#implementacion-tecnica)
-7. [Pruebas de Rendimiento](#pruebas-de-rendimiento)
-8. [Capturas y Prototipos](#capturas-y-prototipos)
-9. [Equipo de Desarrollo](#equipo-de-desarrollo)
-10. [Lecciones Aprendidas](#lecciones-aprendidas)
+5. [Tecnologías Utilizadas](#-tecnologias-utilizadas)
+6. [Implementación Técnica](#-implementacion-tecnica)
+7. [Pruebas de Rendimiento](#-pruebas-de-rendimiento)
+8. [Capturas y Prototipos](#-capturas-y-prototipos)
+9. [Equipo de Desarrollo](#-equipo-de-desarrollo)
+10. [Lecciones Aprendidas](#-lecciones-aprendidas)
 
 ---
 
