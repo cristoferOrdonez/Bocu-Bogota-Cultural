@@ -12,7 +12,7 @@
 2. [Objetivos](#-objetivos)
 3. [Tipos de Usuario](#-tipos-de-usuario)
 4. [Funcionalidades](#-funcionalidades-principales)
-5. [Tecnologías Utilizadas](#-tecnologias-utilizadas)
+5. [Tecnologías Utilizadas](#%EF%B8%8F-tecnologías-utilizadas)
 6. [Implementación Técnica](#-implementación-técnica)
 7. [Pruebas de Rendimiento](#-pruebas-de-rendimiento)
 8. [Capturas y Prototipos](#-capturas-y-prototipos)
