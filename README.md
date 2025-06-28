@@ -13,7 +13,7 @@
 3. [Tipos de Usuario](#-tipos-de-usuario)
 4. [Funcionalidades](#-funcionalidades-principales)
 5. [Tecnologías Utilizadas](#-tecnologias-utilizadas)
-6. [Implementación Técnica](#-implementacion-tecnica)
+6. [Implementación Técnica](#-implementación-técnica)
 7. [Pruebas de Rendimiento](#-pruebas-de-rendimiento)
 8. [Capturas y Prototipos](#-capturas-y-prototipos)
 9. [Equipo de Desarrollo](#-equipo-de-desarrollo)
